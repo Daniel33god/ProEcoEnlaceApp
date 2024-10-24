@@ -3,8 +3,8 @@
     <solid android:color="#FF5722" /> <!-- Color del fondo del botón -->
 
     <corners
-        android:bottomLeftRadius="30dp"
-        android:bottomRightRadius="30dp"
+        android:bottomLeftRadius="90dp"
+        android:bottomRightRadius="90dp"
         android:topLeftRadius="0dp"
         android:topRightRadius="0dp"
     />
