@@ -24,7 +24,9 @@ class MainActivity : AppCompatActivity() {
         ingresarButton.setOnClickListener {
             val intent = Intent(this, activity_welcome::class.java)
             startActivity(intent) // Navegar a la nueva pantalla
-            //Prueba de modificar
+            //Prueba de
+            //aaaa
+            //eeee
         }
     }
 }
