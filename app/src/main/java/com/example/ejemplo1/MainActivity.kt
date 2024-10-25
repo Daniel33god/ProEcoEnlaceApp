@@ -7,6 +7,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import android.content.Intent
 import android.widget.Button
+import android.widget.TextView
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,9 +25,17 @@ class MainActivity : AppCompatActivity() {
         ingresarButton.setOnClickListener {
             val intent = Intent(this, activity_welcome::class.java)
             startActivity(intent) // Navegar a la nueva pantalla
-            //Prueba de
-            //aaaa
-            //eeee
         }
+
+        // Buscar el TextView por su ID
+        val textView = findViewById<TextView>(R.id.textView)
+
+        // Configurar el click listener
+        textView.setOnClickListener {
+            // Crear un Intent para iniciar la nueva actividad
+            val intent = Intent(this, crearCuenta::class.java)
+            startActivity(intent) // Navegar a la segunda actividad
+        }
+
     }
 }
