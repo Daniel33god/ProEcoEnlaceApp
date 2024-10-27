@@ -27,6 +27,15 @@ class activity_welcome : AppCompatActivity() {
             startActivity(intent) // Navegar a la nueva pantalla
         }
 
+        // Configurar el botón "Ingresar" para cambiar de pantalla
+        val ingresarButton2 = findViewById<Button>(R.id.button7)
+        ingresarButton2.setOnClickListener {
+            val intent = Intent(this, SolicitarVehiculo::class.java)
+            startActivity(intent) // Navegar a la nueva pantalla
+        }
+
+
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
