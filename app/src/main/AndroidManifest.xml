@@ -33,9 +33,6 @@
             android:exported="false"
             android:label="@string/title_activity_mapa_seguimiento" />
         <activity
-            android:name=".seguimiento"
-            android:exported="false" />
-        <activity
             android:name=".tomarFoto"
             android:exported="false" />
         <activity
