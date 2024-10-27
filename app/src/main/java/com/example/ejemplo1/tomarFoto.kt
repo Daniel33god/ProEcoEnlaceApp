@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -23,16 +22,20 @@ class tomarFoto : AppCompatActivity() {
         }
         val btnLoadImage = findViewById<Button>(R.id.btnLoadImage)
         val imageView = findViewById<ImageView>(R.id.imageView)
-        val btnMetodoPago = findViewById<Button>(R.id.btnPayment)
-        btnMetodoPago.setOnClickListener{
-            val intent = Intent(this, MetodoPago::class.java)
-            startActivity(intent)
-        }
 
         btnLoadImage.setOnClickListener {
             // Cargar la imagen desde los recursos drawable
             imageView.setImageResource(R.drawable.basurareciclada)
             imageView.visibility = View.VISIBLE
         }
+
+        // Configurar el botón "Ingresar" para cambiar de pantalla
+        val ingresarButton = findViewById<Button>(R.id.button6)
+        ingresarButton.setOnClickListener {
+            val intent = Intent(this, mapaSeguimiento::class.java)
+            startActivity(intent) // Navegar a la nueva pantalla
+        }
+
+
     }
 }
