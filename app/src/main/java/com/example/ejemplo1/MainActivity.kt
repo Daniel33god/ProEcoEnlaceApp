@@ -27,6 +27,13 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent) // Navegar a la nueva pantalla
         }
 
+        // Configurar el botón "Ingresar" para cambiar de pantalla
+        val ingresarButton3 = findViewById<Button>(R.id.button2)
+        ingresarButton3.setOnClickListener {
+            val intent = Intent(this, tomarFoto::class.java)
+            startActivity(intent) // Navegar a la nueva pantalla
+        }
+
         // Buscar el TextView por su ID
         val textView = findViewById<TextView>(R.id.textView)
 
