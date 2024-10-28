@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 
+
 class activity_welcome : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,6 +34,7 @@ class activity_welcome : AppCompatActivity() {
             val intent = Intent(this, SolicitarVehiculo::class.java)
             startActivity(intent) // Navegar a la nueva pantalla
         }
+
 
 
 

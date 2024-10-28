@@ -31,6 +31,10 @@
             android:value="AIzaSyBRz6IvdyAArzJEKkOky-4Vj2lVmXOMWHc" />
 
         <activity
+            android:name=".Conductor"
+            android:exported="false" />
+
+        <activity
             android:name=".mapaSeguimiento"
             android:exported="false"
             android:label="@string/title_activity_mapa_seguimiento" />

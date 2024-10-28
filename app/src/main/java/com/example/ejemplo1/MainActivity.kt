@@ -26,6 +26,11 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, activity_welcome::class.java)
             startActivity(intent) // Navegar a la nueva pantalla
         }
+        val ingresarButton4= findViewById<Button>(R.id.button10)
+        ingresarButton4.setOnClickListener {
+            val intent = Intent(this, Conductor::class.java)
+            startActivity(intent) // Navegar a la nueva pantalla
+        }
 
         // Configurar el botón "Ingresar" para cambiar de pantalla
         val ingresarButton3 = findViewById<Button>(R.id.button2)
