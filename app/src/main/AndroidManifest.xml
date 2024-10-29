@@ -50,7 +50,7 @@
             android:name=".crearCuenta"
             android:exported="false" />
         <activity
-            android:name=".activity_welcome"
+            android:name=".usuario"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
