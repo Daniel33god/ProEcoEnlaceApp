@@ -57,6 +57,12 @@ class usuario : AppCompatActivity() {
                 true
             }
             R.id.action_about_3 -> {
+                // Configurar el botón "Ingresar" para cambiar de pantalla
+                val ingresarButton2 = findViewById<Button>(R.id.action_about_3)
+                ingresarButton2.setOnClickListener {
+                    val intent = Intent(this, MainActivity::class.java)
+                    startActivity(intent) // Navegar a la nueva pantalla
+                }
                 Toast.makeText(this, "Se presionó el botón About 3", Toast.LENGTH_SHORT).show()
                 true
             }
