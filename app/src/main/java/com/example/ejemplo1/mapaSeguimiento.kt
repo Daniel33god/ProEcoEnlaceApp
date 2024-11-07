@@ -1,12 +1,14 @@
 package com.example.ejemplo1
 
 import android.animation.ValueAnimator
+import android.content.Intent
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.SystemClock
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Button
 import android.widget.Toast
 
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -38,11 +40,43 @@ class mapaSeguimiento : AppCompatActivity(), OnMapReadyCallback {
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
+
+        val ingresarButton2 = findViewById<Button>(R.id.button5)
+        ingresarButton2.setOnClickListener {
+            val intent = Intent(this, CalificacionConductor::class.java)
+            startActivity(intent) // Navegar a la nueva pantalla
+        }
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu, menu)
         return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_about -> {
+                Toast.makeText(this, "Se presionó el botón About", Toast.LENGTH_SHORT).show()
+                true
+            }
+            R.id.action_about_1 -> {
+                Toast.makeText(this, "Se presionó el botón About 1", Toast.LENGTH_SHORT).show()
+                true
+            }
+            R.id.action_about_2 -> {
+                Toast.makeText(this, "Se presionó el botón About 2", Toast.LENGTH_SHORT).show()
+                true
+            }
+            R.id.action_about_3 -> {
+                // Configurar el botón "Ingresar" para cambiar de pantalla
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
+
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     override fun onMapReady(googleMap: GoogleMap) {

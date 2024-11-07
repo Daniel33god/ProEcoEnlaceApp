@@ -43,12 +43,6 @@
             android:layout_height="wrap_content"
             android:text="Enviar" />
 
-        <Button
-            android:id="@+id/button13"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Simular Final de envio" />
-
         <!-- Inicialmente invisible -->
     </LinearLayout>
 

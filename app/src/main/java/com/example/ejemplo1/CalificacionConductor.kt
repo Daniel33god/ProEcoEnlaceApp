@@ -1,6 +1,9 @@
 package com.example.ejemplo1
 
+import android.content.Intent
 import android.os.Bundle
+import android.widget.Button
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -15,6 +18,12 @@ class CalificacionConductor : AppCompatActivity() {
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
+        }
+        val ingresarButton2 = findViewById<Button>(R.id.button11)
+        ingresarButton2.setOnClickListener {
+            Toast.makeText(this, "Se realizo el reciclaje con exito", Toast.LENGTH_SHORT).show()
+            val intent = Intent(this, usuario::class.java)
+            startActivity(intent) // Navegar a la nueva pantalla
         }
     }
 }

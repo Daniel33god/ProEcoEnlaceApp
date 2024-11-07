@@ -55,7 +55,10 @@ class SolicitarVehiculo : AppCompatActivity() {
                 true
             }
             R.id.action_about_3 -> {
-                Toast.makeText(this, "Se presionó el botón About 3", Toast.LENGTH_SHORT).show()
+                // Configurar el botón "Ingresar" para cambiar de pantalla
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
+
                 true
             }
             else -> super.onOptionsItemSelected(item)

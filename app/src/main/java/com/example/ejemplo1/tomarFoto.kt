@@ -32,13 +32,7 @@ class tomarFoto : AppCompatActivity() {
         // Configurar el botón "Ingresar" para cambiar de pantalla
         val ingresarButton = findViewById<Button>(R.id.button6)
         ingresarButton.setOnClickListener {
-            val intent = Intent(this, mapaSeguimiento::class.java)
-            startActivity(intent) // Navegar a la nueva pantalla
-        }
-
-        val ingresarButton2 = findViewById<Button>(R.id.button13)
-        ingresarButton2.setOnClickListener {
-            val intent = Intent(this, CalificacionConductor::class.java)
+            val intent = Intent(this, vehiculoDisponible::class.java)
             startActivity(intent) // Navegar a la nueva pantalla
         }
 
