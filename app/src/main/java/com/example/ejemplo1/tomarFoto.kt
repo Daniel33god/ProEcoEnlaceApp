@@ -36,11 +36,6 @@ class tomarFoto : AppCompatActivity() {
             startActivity(intent) // Navegar a la nueva pantalla
         }
 
-        val ingresarButton3 = findViewById<Button>(R.id.btnPayment)
-        ingresarButton3.setOnClickListener {
-            val intent = Intent(this, MetodoPago::class.java)
-            startActivity(intent) // Navegar a la nueva pantalla
-        }
 
 
     }
