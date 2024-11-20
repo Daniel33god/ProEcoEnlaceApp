@@ -42,5 +42,11 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent) // Navegar a la segunda actividad
         }
 
+        val ingresarButton5= findViewById<Button>(R.id.button13)
+        ingresarButton5.setOnClickListener {
+            val intent = Intent(this, mapaSeguimiento2::class.java)
+            startActivity(intent) // Navegar a la nueva pantalla
+        }
+
     }
 }
