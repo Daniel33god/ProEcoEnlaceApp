@@ -2,4 +2,11 @@
     <string name="app_name">Ejemplo1</string>
     <string name="title_activity_mapa_seguimiento">mapaSeguimiento</string>
     <string name="title_activity_mapa_seguimiento3">mapaSeguimiento3</string>
+    <string-array name="generos">
+        <item>Seleccione su género</item>
+        <item>Masculino</item>
+        <item>Femenino</item>
+        <item>Otro</item>
+    </string-array>
+
 </resources>

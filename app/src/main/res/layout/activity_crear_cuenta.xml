@@ -11,50 +11,125 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <!-- Contenedor que incluye todos los botones -->
-        <LinearLayout
+        <!-- Contenedor con RelativeLayout -->
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp"
-            android:gravity="center_horizontal">
+            android:padding="16dp">
 
-            <!-- Aquí agregas los botones que necesites -->
-
-            <EditText
-                android:id="@+id/editTextText2"
+            <!-- Título -->
+            <TextView
+                android:id="@+id/textViewTitulo"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginTop="68dp"
-                android:ems="10"
-                android:inputType="text"
-                android:hint="Nombre"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                />
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="24dp"
+                android:text="Crear Cuenta"
+                android:textSize="24sp"
+                android:textStyle="bold" />
 
+            <!-- Nombre -->
             <EditText
-                android:id="@+id/editTextText3"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginTop="20dp"
-                android:ems="10"
-                android:inputType="text"
+                android:id="@+id/editTextNombre"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/textViewTitulo"
+                android:layout_marginTop="10dp"
+                android:hint="Nombre" />
+
+            <!-- Apellido -->
+            <EditText
+                android:id="@+id/editTextApellido"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:hint="Apellido"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                />
+                android:layout_below="@id/editTextNombre"
+                android:layout_marginTop="16dp" />
 
+            <!-- RUT -->
+            <EditText
+                android:id="@+id/editTextRUT"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="RUT"
+                android:layout_below="@id/editTextApellido"
+                android:layout_marginTop="16dp" />
+
+            <!-- Fecha de Nacimiento -->
+            <EditText
+                android:id="@+id/editTextFechaNacimiento"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Fecha de nacimiento"
+                android:focusable="false"
+                android:inputType="none"
+                android:layout_below="@id/editTextRUT"
+                android:layout_marginTop="16dp" />
+
+            <!-- Email -->
+            <EditText
+                android:id="@+id/editTextEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Email"
+                android:inputType="textEmailAddress"
+                android:layout_below="@id/editTextFechaNacimiento"
+                android:layout_marginTop="16dp" />
+
+            <Spinner
+                android:id="@+id/spinnerGenero"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/editTextEmail"
+                android:layout_marginTop="16dp"
+                android:spinnerMode="dropdown"
+                android:entries="@array/generos" />
+
+
+            <!-- Celular -->
+            <EditText
+                android:id="@+id/editTextCelular"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Celular"
+                android:inputType="phone"
+                android:layout_below="@id/spinnerGenero"
+                android:layout_marginTop="16dp" />
+
+            <!-- Dirección -->
+            <EditText
+                android:id="@+id/editTextDireccion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Dirección"
+                android:inputType="textPostalAddress"
+                android:layout_below="@id/editTextCelular"
+                android:layout_marginTop="16dp" />
+
+            <!-- Contraseña -->
+            <EditText
+                android:id="@+id/editTextContrasena"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Contraseña"
+                android:inputType="textPassword"
+                android:layout_below="@id/editTextDireccion"
+                android:layout_marginTop="16dp" />
+
+            <!-- Botón para crear cuenta -->
             <Button
                 android:id="@+id/button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Crear Cuenta"
-                android:layout_marginTop="20dp"/>
+                android:layout_below="@id/editTextContrasena"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp" />
 
-        </LinearLayout>
+        </RelativeLayout>
     </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
