@@ -36,8 +36,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/textViewTitulo"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
                 android:layout_marginTop="10dp"
-                android:hint="Nombre" />
+                android:hint="Nombre"
+                android:backgroundTint="#673AB7"/>
 
             <!-- Apellido -->
             <EditText
@@ -46,7 +51,10 @@
                 android:layout_height="wrap_content"
                 android:hint="Apellido"
                 android:layout_below="@id/editTextNombre"
-                android:layout_marginTop="16dp" />
+                android:layout_marginTop="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:backgroundTint="#673AB7"/>
 
             <!-- RUT -->
             <EditText
@@ -55,7 +63,10 @@
                 android:layout_height="wrap_content"
                 android:hint="RUT"
                 android:layout_below="@id/editTextApellido"
-                android:layout_marginTop="16dp" />
+                android:layout_marginTop="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:backgroundTint="#673AB7"/>
 
             <!-- Fecha de Nacimiento -->
             <EditText
@@ -66,7 +77,10 @@
                 android:focusable="false"
                 android:inputType="none"
                 android:layout_below="@id/editTextRUT"
-                android:layout_marginTop="16dp" />
+                android:layout_marginTop="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:backgroundTint="#673AB7"/>
 
             <!-- Email -->
             <EditText
@@ -76,7 +90,10 @@
                 android:hint="Email"
                 android:inputType="textEmailAddress"
                 android:layout_below="@id/editTextFechaNacimiento"
-                android:layout_marginTop="16dp" />
+                android:layout_marginTop="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:backgroundTint="#673AB7"/>
 
             <Spinner
                 android:id="@+id/spinnerGenero"
@@ -85,7 +102,10 @@
                 android:layout_below="@id/editTextEmail"
                 android:layout_marginTop="16dp"
                 android:spinnerMode="dropdown"
-                android:entries="@array/generos" />
+                android:entries="@array/generos"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:backgroundTint="#673AB7"/>
 
 
             <!-- Celular -->
@@ -96,7 +116,10 @@
                 android:hint="Celular"
                 android:inputType="phone"
                 android:layout_below="@id/spinnerGenero"
-                android:layout_marginTop="16dp" />
+                android:layout_marginTop="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:backgroundTint="#673AB7"/>
 
             <!-- Dirección -->
             <EditText
@@ -106,7 +129,10 @@
                 android:hint="Dirección"
                 android:inputType="textPostalAddress"
                 android:layout_below="@id/editTextCelular"
-                android:layout_marginTop="16dp" />
+                android:layout_marginTop="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:backgroundTint="#673AB7"/>
 
             <!-- Contraseña -->
             <EditText
@@ -116,7 +142,10 @@
                 android:hint="Contraseña"
                 android:inputType="textPassword"
                 android:layout_below="@id/editTextDireccion"
-                android:layout_marginTop="16dp" />
+                android:layout_marginTop="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:backgroundTint="#673AB7"/>
 
             <!-- Botón para crear cuenta -->
             <Button
@@ -125,6 +154,16 @@
                 android:layout_height="wrap_content"
                 android:text="Crear Cuenta"
                 android:layout_below="@id/editTextContrasena"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:backgroundTint="#4CAF50"/>
+
+            <Button
+                android:id="@+id/button2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Volver"
+                android:layout_below="@id/button"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="20dp" />
 

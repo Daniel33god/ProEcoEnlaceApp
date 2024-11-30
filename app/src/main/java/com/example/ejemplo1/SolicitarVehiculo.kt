@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -29,6 +30,13 @@ class SolicitarVehiculo : AppCompatActivity() {
         val ingresarButton = findViewById<Button>(R.id.button5)
         ingresarButton.setOnClickListener {
             val intent = Intent(this, tomarFoto::class.java)
+            startActivity(intent) // Navegar a la nueva pantalla
+        }
+
+        // Configurar el botón para cambiar de pantalla
+        val ingresarButton1 = findViewById<ImageButton>(R.id.imageButtonBack)
+        ingresarButton1.setOnClickListener {
+            val intent = Intent(this, usuario::class.java)
             startActivity(intent) // Navegar a la nueva pantalla
         }
     }

@@ -6,12 +6,12 @@
 
     <item
         android:id="@+id/action_about"
-        android:title="About"
+        android:title="Perfil"
         app:showAsAction="never" />
 
     <item
         android:id="@+id/action_about_1"
-        android:title="About 1"
+        android:title="Historial"
         app:showAsAction="never" />
 
     <item

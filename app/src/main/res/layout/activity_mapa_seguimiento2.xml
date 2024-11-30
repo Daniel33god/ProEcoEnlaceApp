@@ -5,7 +5,35 @@
     android:layout_height="match_parent"
     tools:context=".mapaSeguimiento2">
 
-  <!-- TODO: Update blank fragment layout -->
+  <androidx.appcompat.widget.Toolbar
+      android:id="@+id/toolbar"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:background="#009688"
+      android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+      android:title=""
+      tools:ignore="MissingConstraints">
+
+    <ImageButton
+        android:id="@+id/imageButtonBack"
+        android:layout_width="30dp"
+        android:layout_height="35dp"
+        android:layout_margin="16dp"
+        android:background="@null"
+        android:scaleType="centerInside"
+        android:src="@drawable/flechatraswhite"/>
+
+  </androidx.appcompat.widget.Toolbar>
+
+  <EditText
+      android:id="@+id/editTextTextPostalAddress"
+      android:layout_width="407dp"
+      android:layout_height="61dp"
+      android:layout_below="@+id/toolbar"
+      android:layout_marginTop="23dp"
+      android:ems="10"
+      android:hint="Ingrese su dirección"
+      android:inputType="textPostalAddress" />
 
   <fragment
       android:id="@+id/map_fragment"
@@ -13,7 +41,7 @@
       android:layout_width="409dp"
       android:layout_height="382dp"
       android:layout_alignParentTop="true"
-      android:layout_marginTop="145dp" />
+      android:layout_marginTop="176dp" />
 
   <Button
       android:id="@+id/button"
@@ -21,9 +49,24 @@
       android:layout_height="wrap_content"
       android:layout_below="@+id/map_fragment"
       android:layout_alignParentStart="true"
-      android:layout_marginStart="152dp"
-      android:layout_marginTop="51dp"
+      android:layout_alignParentEnd="true"
+      android:layout_marginStart="150dp"
+      android:layout_marginTop="21dp"
+      android:layout_marginEnd="147dp"
       android:text="Iniciar gps" />
+
+  <Button
+      android:id="@+id/button5"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_below="@+id/button"
+      android:layout_alignParentStart="true"
+      android:layout_alignParentEnd="true"
+      android:layout_marginStart="83dp"
+      android:layout_marginTop="23dp"
+      android:layout_marginEnd="75dp"
+      android:backgroundTint="#4CAF50"
+      android:text="Subir Imagen y Metodo de Pago" />
 
 
 </RelativeLayout>

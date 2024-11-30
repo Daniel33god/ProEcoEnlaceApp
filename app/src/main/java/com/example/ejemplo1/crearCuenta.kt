@@ -30,6 +30,13 @@ class crearCuenta : AppCompatActivity() {
             startActivity(intent) // Navegar a la nueva pantalla
         }
 
+        // Configurar el botón "Ingresar" para cambiar de pantalla
+        val ingresarButton2 = findViewById<Button>(R.id.button2)
+        ingresarButton2.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent) // Navegar a la nueva pantalla
+        }
+
         // Configurar el DatePickerDialog para la fecha de nacimiento
         val fechaNacimientoEditText = findViewById<EditText>(R.id.editTextFechaNacimiento)
         fechaNacimientoEditText.setOnClickListener {

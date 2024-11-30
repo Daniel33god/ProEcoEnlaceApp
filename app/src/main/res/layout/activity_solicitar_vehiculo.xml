@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="464dp"
         android:backgroundTint="#4CAF50"
-        android:text="Solicitar Vehiculo"
+        android:text="Subir Imagen y Metodo de Pago"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextTextPostalAddress" />
@@ -38,10 +38,21 @@
         android:layout_height="wrap_content"
         android:background="#009688"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        android:elevation="4dp"
-        app:title="Bienvenido"
-        app:titleTextColor="@android:color/white"
-        tools:ignore="MissingConstraints" />
+        app:title=""
+        tools:ignore="MissingConstraints">
+
+        <ImageButton
+            android:id="@+id/imageButtonBack"
+            android:layout_width="30dp"
+            android:layout_height="35dp"
+            android:layout_margin="16dp"
+            android:background="@null"
+            android:scaleType="centerInside"
+            android:src="@drawable/flechatraswhite"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.appcompat.widget.Toolbar>
 
     <ImageView
         android:id="@+id/imageView2"
@@ -49,5 +60,5 @@
         android:layout_height="wrap_content"
         app:srcCompat="@drawable/map"
         tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="-16dp" />
+        tools:layout_editor_absoluteY="0dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

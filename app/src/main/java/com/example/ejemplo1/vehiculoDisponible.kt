@@ -3,6 +3,7 @@ package com.example.ejemplo1
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
+import android.widget.ImageButton
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -25,7 +26,7 @@ class vehiculoDisponible : AppCompatActivity() {
             startActivity(intent) // Navegar a la nueva pantalla
         }
 
-        val ingresarButton4 = findViewById<Button>(R.id.button4)
+        val ingresarButton4 = findViewById<Button>(R.id.button6)
         ingresarButton4.setOnClickListener {
             val intent = Intent(this, mapaSeguimiento::class.java)
             startActivity(intent) // Navegar a la nueva pantalla
@@ -37,6 +38,12 @@ class vehiculoDisponible : AppCompatActivity() {
             startActivity(intent) // Navegar a la nueva pantalla
         }
 
+        // Configurar el botón para cambiar de pantalla
+        val ingresarButton1 = findViewById<ImageButton>(R.id.imageButtonBack)
+        ingresarButton1.setOnClickListener {
+            val intent = Intent(this, tomarFoto::class.java)
+            startActivity(intent) // Navegar a la nueva pantalla
+        }
 
     }
 }

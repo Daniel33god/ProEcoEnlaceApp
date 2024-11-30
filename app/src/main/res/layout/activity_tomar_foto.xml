@@ -8,16 +8,40 @@
     tools:context=".tomarFoto">
 
 
+    <ImageButton
+        android:id="@+id/imageButtonBack"
+        android:layout_width="30dp"
+        android:layout_height="35dp"
+        android:layout_margin="16dp"
+        android:background="@null"
+        android:scaleType="centerInside"
+        android:src="@drawable/flechatras"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
         android:gravity="center"
-        android:padding="16dp">
+        android:orientation="vertical"
+        android:padding="16dp"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp">
+
+        <!-- Título -->
+        <TextView
+            android:id="@+id/textViewTitulo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Imagen y Metodo de Pago"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="30dp"
+            android:layout_centerHorizontal="true" />
 
         <!-- Botón para cargar la imagen -->
-
-        <!-- ImageView donde se mostrará la imagen -->
         <Button
             android:id="@+id/btnLoadImage"
             android:layout_width="wrap_content"
@@ -28,17 +52,44 @@
             android:id="@+id/imageView"
             android:layout_width="400dp"
             android:layout_height="400dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="1dp"
             android:visibility="gone" />
 
+        <!-- Selector para método de pago -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Método de Pago:"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <Spinner
+            android:id="@+id/spinnerMetodo"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="20dp"
+            android:entries="@array/metodos"
+            android:spinnerMode="dropdown"/>
+
+        <!-- Campo para ingresar monto -->
+        <EditText
+            android:id="@+id/editTextMonto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:hint="Monto"
+            android:inputType="numberDecimal"
+            android:backgroundTint="#673AB7"/>
+
+        <!-- Botón para enviar -->
         <Button
             android:id="@+id/button6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Enviar" />
+            android:backgroundTint="#4CAF50"
+            android:layout_marginTop="16dp"
+            android:text="Solicitar Vehiculo" />
 
-        <!-- Inicialmente invisible -->
     </LinearLayout>
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

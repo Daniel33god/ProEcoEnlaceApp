@@ -12,29 +12,47 @@
         android:layout_height="match_parent">
 
         <!-- Contenedor que incluye todos los botones -->
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="17dp"
-            android:gravity="center_horizontal">
+            android:padding="17dp">
 
-            <!-- Aquí agregas los botones que necesites -->
+            <!-- Botón Back -->
+            <ImageButton
+                android:id="@+id/imageButtonBack"
+                android:layout_width="30dp"
+                android:layout_height="35dp"
+                android:layout_margin="16dp"
+                android:background="@null"
+                android:scaleType="centerInside"
+                android:src="@drawable/flechatras"
+                android:clickable="true"
+                android:focusable="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true" />
 
+            <!-- Título -->
+            <TextView
+                android:id="@+id/textViewTitulo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Vehiculos Disponibles"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:layout_below="@id/imageButtonBack"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="-20dp"
+                android:layout_centerHorizontal="true" />
 
+            <!-- Primer LinearLayout con tabla de información -->
             <LinearLayout
                 android:id="@+id/linearLayout2"
                 android:layout_width="wrap_content"
-                android:layout_height="109dp"
-                android:layout_marginTop="60dp"
+                android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.333"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.21">
-
+                android:layout_below="@id/textViewTitulo"
+                android:layout_marginTop="60dp"
+                android:layout_centerHorizontal="true">
 
                 <TableLayout
                     android:id="@+id/tableLayout1"
@@ -43,15 +61,12 @@
                     android:stretchColumns="1">
 
                     <!-- Primera fila -->
-
                     <TableRow>
-
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:padding="8dp"
                             android:text="Nombre" />
-
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -61,13 +76,11 @@
 
                     <!-- Segunda fila -->
                     <TableRow>
-
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:padding="8dp"
                             android:text="Cantidad" />
-
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -76,13 +89,11 @@
                     </TableRow>
 
                     <TableRow>
-
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:padding="8dp"
                             android:text="Marca" />
-
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -91,34 +102,36 @@
                     </TableRow>
 
                 </TableLayout>
-
             </LinearLayout>
 
+            <!-- Imagen del Camión -->
             <ImageView
                 android:id="@+id/imageView5"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:srcCompat="@drawable/camion1" />
+                android:src="@drawable/camion1"
+                android:layout_below="@id/linearLayout2"
+                android:layout_marginTop="10dp" />
+
+            <!-- Botón Solicitar -->
             <Button
                 android:id="@+id/button2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Solicitar"
+                android:layout_below="@id/imageView5"
                 android:layout_marginTop="10dp"
-                android:layout_marginBottom="30dp"/>
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="30dp" />
 
-
+            <!-- Segundo LinearLayout con tabla de información -->
             <LinearLayout
                 android:id="@+id/linearLayout3"
                 android:layout_width="wrap_content"
-                android:layout_height="109dp"
+                android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.333"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.21">
+                android:layout_below="@id/button2"
+                android:layout_centerHorizontal="true">
 
                 <TableLayout
                     android:id="@+id/tableLayout"
@@ -127,15 +140,12 @@
                     android:stretchColumns="1">
 
                     <!-- Primera fila -->
-
                     <TableRow>
-
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:padding="8dp"
                             android:text="Nombre" />
-
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -145,13 +155,11 @@
 
                     <!-- Segunda fila -->
                     <TableRow>
-
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:padding="8dp"
                             android:text="Cantidad" />
-
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -160,13 +168,11 @@
                     </TableRow>
 
                     <TableRow>
-
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:padding="8dp"
                             android:text="Marca" />
-
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -175,33 +181,36 @@
                     </TableRow>
 
                 </TableLayout>
-
             </LinearLayout>
 
+            <!-- Imagen del segundo Camión -->
             <ImageView
                 android:id="@+id/imageView6"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:srcCompat="@drawable/camion2" />
+                android:src="@drawable/camion2"
+                android:layout_below="@id/linearLayout3"
+                android:layout_marginTop="10dp" />
+
+            <!-- Botón Solicitar -->
             <Button
                 android:id="@+id/button5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Solicitar"
+                android:layout_below="@id/imageView6"
                 android:layout_marginTop="10dp"
-                android:layout_marginBottom="30dp"/>
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="30dp" />
 
+            <!-- Tercer LinearLayout con tabla de información -->
             <LinearLayout
                 android:id="@+id/linearLayout5"
                 android:layout_width="wrap_content"
-                android:layout_height="109dp"
+                android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.333"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.21">
+                android:layout_below="@id/button5"
+                android:layout_centerHorizontal="true">
 
                 <TableLayout
                     android:id="@+id/tableLayout3"
@@ -210,15 +219,12 @@
                     android:stretchColumns="1">
 
                     <!-- Primera fila -->
-
                     <TableRow>
-
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:padding="8dp"
                             android:text="Nombre" />
-
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -228,13 +234,11 @@
 
                     <!-- Segunda fila -->
                     <TableRow>
-
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:padding="8dp"
                             android:text="Cantidad" />
-
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -243,13 +247,11 @@
                     </TableRow>
 
                     <TableRow>
-
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:padding="8dp"
                             android:text="Direccion" />
-
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -258,25 +260,27 @@
                     </TableRow>
 
                 </TableLayout>
-
             </LinearLayout>
+
+            <!-- Imagen del tercer Camión -->
             <ImageView
                 android:id="@+id/imageView7"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:srcCompat="@drawable/camion3" />
+                android:src="@drawable/camion3"
+                android:layout_below="@id/linearLayout5"
+                android:layout_marginTop="10dp" />
 
+            <!-- Botón Solicitar -->
             <Button
-                android:id="@+id/button4"
+                android:id="@+id/button6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Solicitar"
-                android:layout_marginTop="10dp"/>
-
-
-
-        </LinearLayout>
+                android:layout_below="@id/imageView7"
+                android:layout_marginTop="10dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="30dp" />
+        </RelativeLayout>
     </ScrollView>
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

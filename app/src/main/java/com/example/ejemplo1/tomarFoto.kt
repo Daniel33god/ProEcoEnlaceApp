@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.ImageView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -29,13 +30,19 @@ class tomarFoto : AppCompatActivity() {
             imageView.visibility = View.VISIBLE
         }
 
+        // Configurar el botón para cambiar de pantalla
+        val ingresarButton1 = findViewById<ImageButton>(R.id.imageButtonBack)
+        ingresarButton1.setOnClickListener {
+            val intent = Intent(this, SolicitarVehiculo::class.java)
+            startActivity(intent) // Navegar a la nueva pantalla
+        }
+
         // Configurar el botón "Ingresar" para cambiar de pantalla
         val ingresarButton = findViewById<Button>(R.id.button6)
         ingresarButton.setOnClickListener {
             val intent = Intent(this, vehiculoDisponible::class.java)
             startActivity(intent) // Navegar a la nueva pantalla
         }
-
 
 
     }

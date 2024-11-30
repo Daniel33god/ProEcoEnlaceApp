@@ -10,6 +10,8 @@ import android.os.Bundle
 import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
@@ -197,6 +199,36 @@ class mapaSeguimiento2 : AppCompatActivity() , OnMapReadyCallback{
         mMap = googleMap
         // Add a marker in Sydney and move the camera
         animateMap(-34.0, 151.0)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_about -> {
+                Toast.makeText(this, "Se presionó el botón About", Toast.LENGTH_SHORT).show()
+                true
+            }
+            R.id.action_about_1 -> {
+                Toast.makeText(this, "Se presionó el botón About 1", Toast.LENGTH_SHORT).show()
+                true
+            }
+            R.id.action_about_2 -> {
+                Toast.makeText(this, "Se presionó el botón About 2", Toast.LENGTH_SHORT).show()
+                true
+            }
+            R.id.action_about_3 -> {
+                // Configurar el botón "Ingresar" para cambiar de pantalla
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
+
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
 }
