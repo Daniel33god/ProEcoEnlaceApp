@@ -6,8 +6,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import android.content.Intent
+import android.os.StrictMode
 import android.widget.Button
+import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
+import com.example.ejemplo1.data.dao.UserDao
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,16 +24,55 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        // Configurar el botón "Ingresar" para cambiar de pantalla
+
+        // Configurar el botón "Ingresar" para ingresar como Usuario
         val ingresarButton = findViewById<Button>(R.id.button)
         ingresarButton.setOnClickListener {
-            val intent = Intent(this, usuario::class.java)
-            startActivity(intent) // Navegar a la nueva pantalla
+            var editEmail = findViewById(R.id.editTextText) as EditText
+            var editPass = findViewById(R.id.editTextTextPassword) as EditText
+
+
+            val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
+            StrictMode.setThreadPolicy(policy)
+            if(procesar_login_usuario(editEmail.text.toString(),editPass.text.toString())){
+                val intent = Intent(this, usuario::class.java)
+                startActivity(intent)
+            }else{
+                val text = "Error en los datos!!!"
+                val duration = Toast.LENGTH_SHORT
+
+                val toast = Toast.makeText(this, text, duration) // in Activity
+                toast.show()
+            }
         }
+        /*
         val ingresarButton4= findViewById<Button>(R.id.button10)
         ingresarButton4.setOnClickListener {
             val intent = Intent(this, Conductor::class.java)
             startActivity(intent) // Navegar a la nueva pantalla
+        }*/
+
+        // Configurar el botón "Ingresar" para ingresar como Conductor
+        val ingresarButton4= findViewById<Button>(R.id.button10)
+        ingresarButton4.setOnClickListener {
+            var editEmail = findViewById(R.id.editTextText) as EditText
+            var editPass = findViewById(R.id.editTextTextPassword) as EditText
+
+            val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
+            StrictMode.setThreadPolicy(policy)
+
+            val userId = procesar_login_conductor(editEmail.text.toString(), editPass.text.toString())
+            if (userId != null) {
+                val sharedPreferences = getSharedPreferences("user_session", MODE_PRIVATE)
+                val editor = sharedPreferences.edit()
+                editor.putInt("user_id", userId) // Guarda el ID en SharedPreferences
+                editor.apply()
+
+                val intent = Intent(this, Conductor::class.java)
+                startActivity(intent)
+            } else {
+                Toast.makeText(this, "Error en los datos!!!", Toast.LENGTH_SHORT).show()
+            }
         }
 
         // Buscar el TextView por su ID
@@ -48,5 +91,30 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent) // Navegar a la nueva pantalla
         }
 
+        val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
+        StrictMode.setThreadPolicy(policy)
+
+        println("Hola")
+        val threadWithRunnable = Thread(SimpleRunnable())
+        threadWithRunnable.start()
+    }
+
+
+    fun procesar_login_usuario(email:String,password:String): Boolean {
+        return UserDao.buscar_usuario(email,password)
+    }
+
+    fun procesar_login_conductor(email:String,password:String): Int? {
+        return UserDao.buscar_conductor(email, password) // Devuelve el ID si las credenciales son válidas
+    }
+
+
+
+}
+class SimpleRunnable: Runnable {
+    public override fun run() {
+        println("${Thread.currentThread()} has run.")
+        var users=UserDao.listar_usuario()
+        println(users)
     }
 }

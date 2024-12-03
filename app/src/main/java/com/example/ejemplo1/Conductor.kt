@@ -11,6 +11,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.example.ejemplo1.data.dao.UserDao
 
 class Conductor : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,6 +32,22 @@ class Conductor : AppCompatActivity() {
         ingresarButton5.setOnClickListener {
             val intent = Intent(this, VerOrdenes::class.java)
             startActivity(intent) // Navegar a la nueva pantalla
+        }
+
+        // Recuperar el ID del usuario desde SharedPreferences
+        val sharedPreferences = getSharedPreferences("user_session", MODE_PRIVATE)
+        val userId = sharedPreferences.getInt("user_id", -1)
+
+        // Si hay un usuario autenticado, buscar su nombre
+        if (userId != -1) {
+            val nombreConductor = UserDao.obtenerNombrePorId(userId)
+
+            // Actualizar el TextView con el nombre del conductor
+            val textViewBienvenido = findViewById<TextView>(R.id.welcomeText)
+            textViewBienvenido.text = "Bienvenido $nombreConductor"
+        } else {
+            // Manejar el caso en que no haya usuario autenticado
+            Toast.makeText(this, "No hay un usuario autenticado.", Toast.LENGTH_SHORT).show()
         }
 
     }
