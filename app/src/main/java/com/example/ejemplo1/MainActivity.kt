@@ -11,7 +11,14 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import com.example.ejemplo1.api.ApiService
 import com.example.ejemplo1.data.dao.UserDao
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import kotlin.reflect.typeOf
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -100,6 +107,7 @@ class MainActivity : AppCompatActivity() {
         println("Hola")
         val threadWithRunnable = Thread(SimpleRunnable())
         threadWithRunnable.start()
+
     }
 
 

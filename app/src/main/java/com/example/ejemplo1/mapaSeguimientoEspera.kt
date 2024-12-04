@@ -8,6 +8,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.example.ejemplo1.data.dao.UserDao
 
 class mapaSeguimientoEspera : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -19,7 +20,7 @@ class mapaSeguimientoEspera : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-
+        val idOrder = intent.getIntExtra("id_order", -1)
         // Configurar el botón "Ingresar" para cambiar de pantalla
         val ingresarButton = findViewById<Button>(R.id.button4)
         ingresarButton.setOnClickListener {
@@ -28,5 +29,16 @@ class mapaSeguimientoEspera : AppCompatActivity() {
             startActivity(intent) // Navegar a la nueva pantalla
         }
 
+        var status = UserDao.buscarStatusOrden(idOrder)
+        while (status.equals("Espera"))
+        {
+            status = UserDao.buscarStatusOrden(idOrder)
+        }
+        val intent = Intent(this, mapaSeguimiento::class.java).apply{
+            /*cambiar el codigo para que redireccione al mapa*/
+            putExtra("id_order", idOrder)
+        }
+
     }
+
 }

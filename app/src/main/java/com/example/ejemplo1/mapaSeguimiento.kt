@@ -6,10 +6,14 @@ import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.SystemClock
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Button
 import android.widget.Toast
+import com.example.ejemplo1.api.ApiService
+import com.example.ejemplo1.api.RouteResponse
+import com.example.ejemplo1.data.dao.UserDao
 
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -19,6 +23,11 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.example.ejemplo1.databinding.ActivityMapaSeguimientoBinding
 import com.google.android.gms.maps.model.PolylineOptions
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 class mapaSeguimiento : AppCompatActivity(), OnMapReadyCallback {
 
@@ -46,6 +55,7 @@ class mapaSeguimiento : AppCompatActivity(), OnMapReadyCallback {
             val intent = Intent(this, CalificacionConductor::class.java)
             startActivity(intent) // Navegar a la nueva pantalla
         }
+
 
     }
 
@@ -90,11 +100,32 @@ class mapaSeguimiento : AppCompatActivity(), OnMapReadyCallback {
         mMap.addMarker(MarkerOptions().position(destino).title("Reciclador"))
 
         // Dibuja la Polyline entre los dos puntos
-        val polylineOptions = PolylineOptions()
+        /*val polylineOptions = PolylineOptions()
             .add(inicio)
             .add(destino)
             .width(5f)
-            .color(Color.BLUE)
+            .color(Color.BLUE)*/
+        val idOrder = intent.getIntExtra("id_order", -1)
+        val start_lng = UserDao.buscarDoubleOrden(idOrder, "coordenates_x_order_start")
+        val start_lat = UserDao.buscarDoubleOrden(idOrder, "coordenates_y_order_start")
+        val end_lat = UserDao.buscarDoubleOrden(idOrder, "coordenates_y_order_end")
+        val end_lng = UserDao.buscarDoubleOrden(idOrder, "coordenates_x_order_end")
+        val start = "${start_lng},${start_lat}"
+        val end = "${end_lng},${end_lat}"
+        var coordlist: List<List<Double>>? = null
+        CoroutineScope(Dispatchers.IO).launch {
+            val call = getRetrofit().create(ApiService::class.java)
+                .getRoute("5b3ce3597851110001cf6248a1c19d4960ff45a5b22d6da339c9312d", start, end)
+            if (call.isSuccessful) {
+                coordlist = getListCoordinates(call.body())
+            } else {
+                Log.i("aris", "KO")
+            }
+        }
+        val polylineOptions = PolylineOptions()
+        coordlist?.forEach{
+            polylineOptions.add(LatLng(it[1], it[0]))
+        }
         val polyline = mMap.addPolyline(polylineOptions)
 
         // Mueve la cámara al inicio
@@ -124,5 +155,28 @@ class mapaSeguimiento : AppCompatActivity(), OnMapReadyCallback {
         }
         animator.start()
     }
+    /*
+    * CoroutineScope(Dispatchers.IO).launch {
+            val call = getRetrofit().create(ApiService::class.java).getRoute("5b3ce3597851110001cf6248a1c19d4960ff45a5b22d6da339c9312d", "-70.13193931907803,-20.251239429965054", "-70.1367567054598, -20.247957309076586")
+            call.body()?.features?.first()?.geometry?.coordinates?.forEach(){
+                val x = it[1]
+                val y = it[0]
+                print(x)
+                print(", ")
+                println(y)
+            }
+            /* [ [y, x] , [y, x] , [y, x] ] */
+        }
 
+
+     */
+    private fun getListCoordinates(routeResponse: RouteResponse?): List<List<Double>>? {
+        return routeResponse?.features?.first()?.geometry?.coordinates
+    }
+    private fun getRetrofit(): Retrofit {
+        return Retrofit.Builder()
+            .baseUrl("https://api.openrouteservice.org/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+    }
 }

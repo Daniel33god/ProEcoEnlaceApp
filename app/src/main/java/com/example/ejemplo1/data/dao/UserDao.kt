@@ -57,6 +57,46 @@ object UserDao {
         return null // Si no se encuentra, devuelve null
     }
 
+    fun buscarStatusOrden(id_order:Int): String? {
+        PostgresqlConexion.getConexion().prepareStatement(
+            "SELECT * FROM \"ORDER\" WHERE id_order = ?;"
+        ).use { ps ->
+            ps.setInt(1, id_order)
+            ps.executeQuery().use { rs ->
+                if (rs.next()) {
+                    return rs.getString("status_order") // Devuelve el ID de la orden
+                }
+            }
+        }
+        return null // Si no se encuentra, devuelve null
+    }
+    fun buscarStringOrden(id_order:Int, returnalVal: String): String? {
+        PostgresqlConexion.getConexion().prepareStatement(
+            "SELECT * FROM \"ORDER\" WHERE id_order = ?;"
+        ).use { ps ->
+            ps.setInt(1, id_order)
+            ps.executeQuery().use { rs ->
+                if (rs.next()) {
+                    return rs.getString(returnalVal) // Devuelve el ID de la orden
+                }
+            }
+        }
+        return null // Si no se encuentra, devuelve null
+    }
+    fun buscarDoubleOrden(id_order:Int, returnalVal: String): Double? {
+        PostgresqlConexion.getConexion().prepareStatement(
+            "SELECT * FROM \"ORDER\" WHERE id_order = ?;"
+        ).use { ps ->
+            ps.setInt(1, id_order)
+            ps.executeQuery().use { rs ->
+                if (rs.next()) {
+                    return rs.getDouble(returnalVal) // Devuelve el ID de la orden
+                }
+            }
+        }
+        return null // Si no se encuentra, devuelve null
+    }
+
     fun obtenerNombrePorId(idUser: Int): String? {
         PostgresqlConexion.getConexion().prepareStatement(
             "SELECT name_user FROM \"USER\" WHERE id_user = ?;"
