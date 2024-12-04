@@ -71,11 +71,11 @@ object UserDao {
         return null // Si no se encuentra, devuelve null
     }
 
-    fun insertarOrden(userId: Int, latitude: Double, longitude: Double, peso: Double, metodoPago: String, monto: Double): Boolean {
+    fun insertarOrden(userId: Int, latitude: Double, longitude: Double, peso: Double, metodoPago: String, monto: Double, address: String): Int? {
         val query = """
-            INSERT INTO "ORDER" (coordenates_y_order_start, coordenates_x_order_start, weight_order, payment_method_order, value_order, id_user) 
-            VALUES (?, ?, ?, ?, ?, ?);
-        """.trimIndent()
+        INSERT INTO "ORDER" (coordenates_y_order_start, coordenates_x_order_start, weight_order, payment_method_order, value_order, id_user, status_order, address_order_start) 
+        VALUES (?, ?, ?, ?, ?, ?, 'Espera', ?) RETURNING id_order;
+    """.trimIndent()
 
         PostgresqlConexion.getConexion().prepareStatement(query).use { ps ->
             ps.setDouble(1, latitude)
@@ -84,12 +84,25 @@ object UserDao {
             ps.setString(4, metodoPago)
             ps.setDouble(5, monto)
             ps.setInt(6, userId)
+            ps.setString(7, address)
 
-            val result = ps.executeUpdate()
-            return result > 0 // Devuelve true si se insertó una fila
+            ps.executeQuery().use { rs ->
+                if (rs.next()) {
+                    return rs.getInt("id_order") // Devuelve el ID generado
+                }
+            }
+        }
+        return -1 // Devuelve -1 si no se generó un ID
+    }
+    fun eliminarOrdenPorId(userId: Int, idOrden: Int) {
+        PostgresqlConexion.getConexion().prepareStatement(
+            "DELETE FROM \"ORDER\" WHERE id_user = ? and id_order = ?;"
+        ).use { ps ->
+            ps.setInt(1, userId)
+            ps.setInt(2, idOrden)
+            ps.executeUpdate()
         }
     }
-
     /*private fun registrar(producto: ProductoModel) {
         PostgresqlConexion.getConexion().prepareStatement(
             "INSERT INTO producto (descripcion, codigobarra, precio) VALUES (?, ?, ?);"

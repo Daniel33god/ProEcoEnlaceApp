@@ -58,21 +58,28 @@ class tomarFoto : AppCompatActivity() {
         val address = intent.getStringExtra("ADDRESS") ?: "Dirección desconocida"
 
 
+
         ingresarButton.setOnClickListener {
             val peso = editTextPeso.text.toString().toDoubleOrNull()
             val metodoPago = spinnerMetodo.selectedItem.toString()
             val monto = editTextMonto.text.toString().toDoubleOrNull()
 
             if (peso != null && monto != null) {
-                // Llamamos al DAO para insertar la orden
-                val success = UserDao.insertarOrden(userId,latitude, longitude, peso, metodoPago, monto)
+                // Llamamos al DAO para insertar la orden y obtener el id_order
+                val idOrder = UserDao.insertarOrden(userId, latitude, longitude, peso, metodoPago, monto, address)
 
-                if (success) {
-                    Toast.makeText(this, "Orden creada exitosamente", Toast.LENGTH_SHORT).show()
-                    val intent = Intent(this, mapaSeguimientoEspera::class.java)
-                    startActivity(intent)
-                } else {
-                    Toast.makeText(this, "Error al crear la orden", Toast.LENGTH_SHORT).show()
+                if (idOrder != null) {
+                    if (idOrder > -1) {
+                        Toast.makeText(this, "Orden creada exitosamente", Toast.LENGTH_SHORT).show()
+                        // Pasamos el id_order a la siguiente pantalla
+                        val intent = Intent(this, mapaSeguimientoEspera::class.java).apply {
+                            putExtra("id_order", idOrder) // Pasamos el id_order
+                        }
+
+                        startActivity(intent)
+                    } else {
+                        Toast.makeText(this, "Error al crear la orden", Toast.LENGTH_SHORT).show()
+                    }
                 }
             } else {
                 Toast.makeText(this, "Por favor completa todos los campos", Toast.LENGTH_SHORT).show()
