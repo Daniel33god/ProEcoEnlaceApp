@@ -9,6 +9,7 @@ import android.os.SystemClock
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.animation.LinearInterpolator
 import android.widget.Button
 import android.widget.Toast
 import com.example.ejemplo1.api.ApiService
@@ -91,9 +92,15 @@ class mapaSeguimiento : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
-
-        val inicio = LatLng(-20.242629798905142, -70.14183085277881) // Punto de inicio
-        val destino = LatLng(-20.248132900715532, -70.13719410859989) // Punto de destino
+        val idOrder = intent.getIntExtra("id_order", -1)
+        val start_lng = UserDao.buscarDoubleOrden(idOrder, "coordenates_x_order_start")
+        val start_lat = UserDao.buscarDoubleOrden(idOrder, "coordenates_y_order_start")
+        val end_lat = UserDao.buscarDoubleOrden(idOrder, "coordenates_y_order_end")
+        val end_lng = UserDao.buscarDoubleOrden(idOrder, "coordenates_x_order_end")
+        val start = "${start_lng},${start_lat}"
+        val end = "${end_lng},${end_lat}"
+        val inicio = LatLng(start_lat!!, start_lng!!) // Punto de inicio
+        val destino = LatLng(end_lat!!, end_lng!!) // Punto de destino
 
         // Agrega el marcador inicial y el destino en el mapa
         mMap.addMarker(MarkerOptions().position(inicio).title("Recolector"))
@@ -105,13 +112,7 @@ class mapaSeguimiento : AppCompatActivity(), OnMapReadyCallback {
             .add(destino)
             .width(5f)
             .color(Color.BLUE)*/
-        val idOrder = intent.getIntExtra("id_order", -1)
-        val start_lng = UserDao.buscarDoubleOrden(idOrder, "coordenates_x_order_start")
-        val start_lat = UserDao.buscarDoubleOrden(idOrder, "coordenates_y_order_start")
-        val end_lat = UserDao.buscarDoubleOrden(idOrder, "coordenates_y_order_end")
-        val end_lng = UserDao.buscarDoubleOrden(idOrder, "coordenates_x_order_end")
-        val start = "${start_lng},${start_lat}"
-        val end = "${end_lng},${end_lat}"
+
         var coordlist: List<List<Double>>? = null
         CoroutineScope(Dispatchers.IO).launch {
             val call = getRetrofit().create(ApiService::class.java)
@@ -123,35 +124,46 @@ class mapaSeguimiento : AppCompatActivity(), OnMapReadyCallback {
             }
         }
         val polylineOptions = PolylineOptions()
-        coordlist?.forEach{
-            polylineOptions.add(LatLng(it[1], it[0]))
+        val pathPoints = coordlist?.map{
+            LatLng(it[1], it[0])
         }
+        polylineOptions.addAll(pathPoints!!)
         val polyline = mMap.addPolyline(polylineOptions)
 
         // Mueve la cámara al inicio
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(inicio, 15f))
 
         // Llama a la función para animar el marcador
-        animateMarkerAlongPath(inicio, destino)
+        if (pathPoints.isNotEmpty()) {
+            animateMarkerAlongPath(pathPoints)
+        }
     }
 
-    private fun animateMarkerAlongPath(startPosition: LatLng, endPosition: LatLng) {
-        val marker = mMap.addMarker(MarkerOptions().position(startPosition).title("Recolector en movimiento"))
+    private fun animateMarkerAlongPath(pathPoints: List<LatLng>) {
+        if (pathPoints.isEmpty()) return
 
-        // Configura el ValueAnimator para interpolar la posición del marcador
-        val animator = ValueAnimator.ofFloat(0f, 1f)
-        animator.duration = 20000 // Duración de la animación (en milisegundos)
+        val marker = mMap.addMarker(MarkerOptions().position(pathPoints.first()).title("Recolector en movimiento"))
+
+        val animator = ValueAnimator.ofInt(0, pathPoints.size - 1)
+        animator.duration = 20000 // Total duration of the animation
+        animator.interpolator = LinearInterpolator()
         animator.addUpdateListener { animation ->
-            val fraction = animation.animatedFraction
-            val lat = fraction * endPosition.latitude + (1 - fraction) * startPosition.latitude
-            val lng = fraction * endPosition.longitude + (1 - fraction) * startPosition.longitude
-            val newPosition = LatLng(lat, lng)
+            val index = animation.animatedValue as Int
 
-            // Mueve el marcador a la nueva posición
-            marker?.position = newPosition
+            if (index < pathPoints.size - 1) {
+                val start = pathPoints[index]
+                val end = pathPoints[index + 1]
 
-            // Centra la cámara en la posición del marcador
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(newPosition))
+                // Interpolate between the current segment
+                val fraction = (animation.currentPlayTime % (20000 / pathPoints.size)) / (20000.0 / pathPoints.size)
+                val lat = fraction * end.latitude + (1 - fraction) * start.latitude
+                val lng = fraction * end.longitude + (1 - fraction) * start.longitude
+                val newPosition = LatLng(lat, lng)
+
+                // Move the marker and adjust the camera
+                marker?.position = newPosition
+                mMap.moveCamera(CameraUpdateFactory.newLatLng(newPosition))
+            }
         }
         animator.start()
     }
