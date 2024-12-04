@@ -19,4 +19,5 @@ data class OrderModel(
     val id_trucker: Int,
     val coordenates_x_order_end: Float,
     val coordenates_y_order_end: Float,
+    val address_order_start: String
 )

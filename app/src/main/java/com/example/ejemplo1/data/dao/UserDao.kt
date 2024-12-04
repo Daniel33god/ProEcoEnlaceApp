@@ -13,8 +13,13 @@ object UserDao {
                     resultSet.getInt("id_user"),
                     resultSet.getString("name_user"),
                     resultSet.getString("last_name_user"),
-                    resultSet.getString("password_user"),
+                    resultSet.getString("dni_user"),
                     resultSet.getString("email_user"),
+                    resultSet.getString("phone_user"),
+                    resultSet.getString("address_user"),
+                    resultSet.getString("password_user"),
+                    resultSet.getString("gender_user"),
+                    resultSet.getDate("birthdate_user")
                 )
             )
         }
