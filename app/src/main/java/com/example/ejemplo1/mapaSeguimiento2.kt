@@ -39,21 +39,12 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.PolylineOptions
 import java.security.AccessController.getContext
 
-
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
 /**
  * A simple [Fragment] subclass.
  * Use the [MapsFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
 class mapaSeguimiento2 : AppCompatActivity() , OnMapReadyCallback{
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private val polylineOptions = PolylineOptions()
 
@@ -63,7 +54,6 @@ class mapaSeguimiento2 : AppCompatActivity() , OnMapReadyCallback{
         priority = LocationRequest.PRIORITY_HIGH_ACCURACY
     }
 
-
     private lateinit var mMap: GoogleMap
     private lateinit var binding: ActivityMapaSeguimiento2Binding
 
@@ -72,8 +62,6 @@ class mapaSeguimiento2 : AppCompatActivity() , OnMapReadyCallback{
 
         binding = ActivityMapaSeguimiento2Binding.inflate(layoutInflater)
         setContentView(binding.root)
-
-
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         val mapFragment = supportFragmentManager
@@ -88,7 +76,6 @@ class mapaSeguimiento2 : AppCompatActivity() , OnMapReadyCallback{
 
         requestPermission()
     }
-
 
     private fun requestPermission(){
         val permissionLauncher = registerForActivityResult(

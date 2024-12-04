@@ -32,7 +32,7 @@
       android:layout_below="@+id/toolbar"
       android:layout_marginTop="23dp"
       android:ems="10"
-      android:hint="Ingrese su dirección"
+      android:hint="Ingrese su dirección2"
       android:inputType="textPostalAddress" />
 
   <fragment

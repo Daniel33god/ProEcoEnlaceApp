@@ -34,15 +34,18 @@ class MainActivity : AppCompatActivity() {
 
             val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
             StrictMode.setThreadPolicy(policy)
-            if(procesar_login_usuario(editEmail.text.toString(),editPass.text.toString())){
+
+            val userId = procesar_login_usuario(editEmail.text.toString(), editPass.text.toString())
+            if (userId != null) {
+                val sharedPreferences = getSharedPreferences("user_session", MODE_PRIVATE)
+                val editor = sharedPreferences.edit()
+                editor.putInt("user_id", userId) // Guarda el ID en SharedPreferences
+                editor.apply()
+
                 val intent = Intent(this, usuario::class.java)
                 startActivity(intent)
-            }else{
-                val text = "Error en los datos!!!"
-                val duration = Toast.LENGTH_SHORT
-
-                val toast = Toast.makeText(this, text, duration) // in Activity
-                toast.show()
+            } else {
+                Toast.makeText(this, "Error en los datos!!!", Toast.LENGTH_SHORT).show()
             }
         }
         /*
@@ -87,7 +90,7 @@ class MainActivity : AppCompatActivity() {
 
         val ingresarButton5= findViewById<Button>(R.id.button13)
         ingresarButton5.setOnClickListener {
-            val intent = Intent(this, mapaSeguimiento2::class.java)
+            val intent = Intent(this, solicitarVehiculo::class.java)
             startActivity(intent) // Navegar a la nueva pantalla
         }
 
@@ -100,7 +103,7 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    fun procesar_login_usuario(email:String,password:String): Boolean {
+    fun procesar_login_usuario(email:String,password:String): Int? {
         return UserDao.buscar_usuario(email,password)
     }
 
