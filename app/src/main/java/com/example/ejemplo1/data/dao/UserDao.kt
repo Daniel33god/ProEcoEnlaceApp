@@ -15,6 +15,11 @@ object UserDao {
                     resultSet.getString("last_name_user"),
                     resultSet.getString("password_user"),
                     resultSet.getString("email_user"),
+                    resultSet.getString("phone_user"),
+                    resultSet.getString("address_user"),
+                    resultSet.getString("dni_user"),
+                    resultSet.getString("gender_user"),
+                    resultSet.getDate("birthdate_user")
                 )
             )
         }
@@ -37,6 +42,11 @@ object UserDao {
                             rs.getString("last_name_user"),
                             rs.getString("password_user"),
                             rs.getString("email_user"),
+                            rs.getString("phone_user"),
+                            rs.getString("address_user"),
+                            rs.getString("dni_user"),
+                            rs.getString("gender_user"),
+                            rs.getDate("birthdate_user")
                         )
                     )
                 }
