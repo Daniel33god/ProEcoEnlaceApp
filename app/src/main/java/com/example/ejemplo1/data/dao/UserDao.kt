@@ -21,7 +21,7 @@ object UserDao {
         return lista
     }
 
-    fun buscar_usuario(email:String,password:String): Boolean {
+    fun buscar_usuario(email:String,password:String): Int?{
         var lista = mutableListOf<UserModel>()
         PostgresqlConexion.getConexion().prepareStatement(
             "SELECT * FROM \"USER\" WHERE email_user = ? AND password_user = ?;"
@@ -29,20 +29,12 @@ object UserDao {
             ps.setString(1, email)
             ps.setString(2, password)
             ps.executeQuery().use { rs ->
-                while (rs.next()) {
-                    lista.add(
-                        UserModel(
-                            rs.getInt("id_user"),
-                            rs.getString("name_user"),
-                            rs.getString("last_name_user"),
-                            rs.getString("password_user"),
-                            rs.getString("email_user"),
-                        )
-                    )
+                if (rs.next()) {
+                    return rs.getInt("id_user") // Devuelve el ID del usuario
                 }
             }
         }
-        return lista.isNotEmpty()
+        return null // Si no se encuentra, devuelve null
     }
 
     fun buscar_conductor(email:String,password:String): Int?{
@@ -72,6 +64,25 @@ object UserDao {
             }
         }
         return null // Si no se encuentra, devuelve null
+    }
+
+    fun insertarOrden(userId: Int, latitude: Double, longitude: Double, peso: Double, metodoPago: String, monto: Double): Boolean {
+        val query = """
+            INSERT INTO "ORDER" (coordenates_y_order_start, coordenates_x_order_start, weight_order, payment_method_order, value_order, id_user) 
+            VALUES (?, ?, ?, ?, ?, ?);
+        """.trimIndent()
+
+        PostgresqlConexion.getConexion().prepareStatement(query).use { ps ->
+            ps.setDouble(1, latitude)
+            ps.setDouble(2, longitude)
+            ps.setDouble(3, peso)
+            ps.setString(4, metodoPago)
+            ps.setDouble(5, monto)
+            ps.setInt(6, userId)
+
+            val result = ps.executeUpdate()
+            return result > 0 // Devuelve true si se insertó una fila
+        }
     }
 
     /*private fun registrar(producto: ProductoModel) {

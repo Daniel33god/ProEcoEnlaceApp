@@ -1,36 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SolicitarVehiculo"
+    tools:context=".solicitarVehiculo"
     android:theme="@style/menyStyle">
-
-    <Button
-        android:id="@+id/button5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="464dp"
-        android:backgroundTint="#4CAF50"
-        android:text="Subir Imagen y Metodo de Pago"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPostalAddress" />
-
-    <EditText
-        android:id="@+id/editTextTextPostalAddress"
-        android:layout_width="407dp"
-        android:layout_height="61dp"
-        android:layout_marginTop="80dp"
-        android:ems="10"
-        android:inputType="textPostalAddress"
-        android:hint="Ingrese su dirección"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.174"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -38,27 +13,76 @@
         android:layout_height="wrap_content"
         android:background="#009688"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:title=""
-        tools:ignore="MissingConstraints">
+        android:title="Ubicar Usuario"
+        android:titleTextColor="@color/white"
+        tools:ignore="MissingConstraints" />
 
-        <ImageButton
-            android:id="@+id/imageButtonBack"
-            android:layout_width="30dp"
-            android:layout_height="35dp"
-            android:layout_margin="16dp"
-            android:background="@null"
-            android:scaleType="centerInside"
-            android:src="@drawable/flechatraswhite"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+    <ImageButton
+        android:id="@+id/imageButtonBack"
+        android:layout_width="30dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_alignParentStart="true"
+        android:background="@null"
+        android:scaleType="centerInside"
+        android:src="@drawable/flechatraswhite" />
 
-    </androidx.appcompat.widget.Toolbar>
+    <EditText
+        android:id="@+id/editTextTextPostalAddress"
+        android:layout_width="407dp"
+        android:layout_height="61dp"
+        android:layout_below="@+id/toolbar"
+        android:layout_marginTop="23dp"
+        android:ems="10"
+        android:hint="Ingrese su dirección"
+        android:inputType="textPostalAddress" />
 
-    <ImageView
-        android:id="@+id/imageView2"
+    <Button
+        android:id="@+id/button5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/map"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="0dp" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:layout_below="@+id/map_fragment"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="83dp"
+        android:layout_marginTop="35dp"
+        android:layout_marginEnd="78dp"
+        android:backgroundTint="#4CAF50"
+        android:text="Subir Imagen y Metodo de Pago" />
+
+    <fragment
+        android:id="@+id/map_fragment"
+        class="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="420dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="260dp" />
+
+
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editTextTextPostalAddress"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="91dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="67dp"
+        android:text="Buscar Dirección" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="17dp"
+        android:textSize="24sp"
+        android:layout_marginTop="18dp"
+        android:layout_toEndOf="@+id/imageButtonBack"
+        android:text="Ubicación del Usuario"
+        android:textColor="@color/white"/>
+
+
+</RelativeLayout>
