@@ -134,12 +134,11 @@ object UserDao {
         }
         return -1 // Devuelve -1 si no se generó un ID
     }
-    fun eliminarOrdenPorId(userId: Int, idOrden: Int) {
+    fun eliminarOrdenPorId(idOrden: Int) {
         PostgresqlConexion.getConexion().prepareStatement(
-            "DELETE FROM \"ORDER\" WHERE id_user = ? and id_order = ?;"
+            "DELETE FROM \"ORDER\" WHERE id_order = ?;"
         ).use { ps ->
-            ps.setInt(1, userId)
-            ps.setInt(2, idOrden)
+            ps.setInt(1, idOrden)
             ps.executeUpdate()
         }
     }
