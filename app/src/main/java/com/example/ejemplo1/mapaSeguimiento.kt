@@ -30,6 +30,8 @@ import kotlinx.coroutines.launch
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
+
+
 class mapaSeguimiento : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var mMap: GoogleMap
@@ -90,8 +92,8 @@ class mapaSeguimiento : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
-    override fun onMapReady(googleMap: GoogleMap) {
-        mMap = googleMap
+    private fun createRoute()
+    {
         val idOrder = intent.getIntExtra("id_order", -1)
         val start_lng = UserDao.buscarDoubleOrden(idOrder, "coordenates_x_order_start")
         val start_lat = UserDao.buscarDoubleOrden(idOrder, "coordenates_y_order_start")
@@ -101,10 +103,26 @@ class mapaSeguimiento : AppCompatActivity(), OnMapReadyCallback {
         val end = "${end_lng},${end_lat}"
         val inicio = LatLng(start_lat!!, start_lng!!) // Punto de inicio
         val destino = LatLng(end_lat!!, end_lng!!) // Punto de destino
-
-        // Agrega el marcador inicial y el destino en el mapa
         mMap.addMarker(MarkerOptions().position(inicio).title("Recolector"))
         mMap.addMarker(MarkerOptions().position(destino).title("Reciclador"))
+        CoroutineScope(Dispatchers.IO).launch {
+            val call = getRetrofit().create(ApiService::class.java)
+                .getRoute("5b3ce3597851110001cf6248a1c19d4960ff45a5b22d6da339c9312d", start, end)
+            if (call.isSuccessful) {
+                getListCoordinates(call.body())
+                drawRoute(call.body(), inicio!!, destino!!)
+            } else {
+                Log.i("aris", "KO")
+            }
+        }
+    }
+    override fun onMapReady(googleMap: GoogleMap) {
+        this.mMap = googleMap
+        createRoute()
+
+
+        // Agrega el marcador inicial y el destino en el mapa
+
 
         // Dibuja la Polyline entre los dos puntos
         /*val polylineOptions = PolylineOptions()
@@ -113,30 +131,9 @@ class mapaSeguimiento : AppCompatActivity(), OnMapReadyCallback {
             .width(5f)
             .color(Color.BLUE)*/
 
-        var coordlist: List<List<Double>>? = null
-        CoroutineScope(Dispatchers.IO).launch {
-            val call = getRetrofit().create(ApiService::class.java)
-                .getRoute("5b3ce3597851110001cf6248a1c19d4960ff45a5b22d6da339c9312d", start, end)
-            if (call.isSuccessful) {
-                coordlist = getListCoordinates(call.body())
-            } else {
-                Log.i("aris", "KO")
-            }
-        }
-        val polylineOptions = PolylineOptions()
-        val pathPoints = coordlist?.map{
-            LatLng(it[1], it[0])
-        }
-        polylineOptions.addAll(pathPoints!!)
-        val polyline = mMap.addPolyline(polylineOptions)
+        //var coordlist: List<List<Double>>? = null
 
-        // Mueve la cámara al inicio
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(inicio, 15f))
 
-        // Llama a la función para animar el marcador
-        if (pathPoints.isNotEmpty()) {
-            animateMarkerAlongPath(pathPoints)
-        }
     }
 
     private fun animateMarkerAlongPath(pathPoints: List<LatLng>) {
@@ -167,21 +164,25 @@ class mapaSeguimiento : AppCompatActivity(), OnMapReadyCallback {
         }
         animator.start()
     }
-    /*
-    * CoroutineScope(Dispatchers.IO).launch {
-            val call = getRetrofit().create(ApiService::class.java).getRoute("5b3ce3597851110001cf6248a1c19d4960ff45a5b22d6da339c9312d", "-70.13193931907803,-20.251239429965054", "-70.1367567054598, -20.247957309076586")
-            call.body()?.features?.first()?.geometry?.coordinates?.forEach(){
-                val x = it[1]
-                val y = it[0]
-                print(x)
-                print(", ")
-                println(y)
+
+    private fun drawRoute(routeResponse: RouteResponse?, start: LatLng?, end: LatLng?)
+    {
+        val polylineOptions = PolylineOptions()
+        val pathPoints = getListCoordinates(routeResponse)?.map{
+            LatLng(it[1], it[0])
+        }?: emptyList()
+        polylineOptions.addAll(pathPoints)
+        runOnUiThread {
+            val polyline = mMap.addPolyline(polylineOptions)
+            // Mueve la cámara al inicio
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(start!!, 15f))
+            // Llama a la función para animar el marcador
+            if (pathPoints.isNotEmpty()) {
+                animateMarkerAlongPath(pathPoints)
             }
-            /* [ [y, x] , [y, x] , [y, x] ] */
         }
+    }
 
-
-     */
     private fun getListCoordinates(routeResponse: RouteResponse?): List<List<Double>>? {
         return routeResponse?.features?.first()?.geometry?.coordinates
     }
