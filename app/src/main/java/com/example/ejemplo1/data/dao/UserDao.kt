@@ -1,5 +1,7 @@
 package com.example.ejemplo1.data.dao
 
+import android.content.Context
+import android.database.sqlite.SQLiteDatabase
 import com.example.ejemplo1.data.model.UserModel
 
 object UserDao {
@@ -111,6 +113,42 @@ object UserDao {
         return null // Si no se encuentra, devuelve null
     }
 
+    fun obtenerIdTrucker(idUser: Int): Int? {
+        PostgresqlConexion.getConexion().prepareStatement(
+            """
+        SELECT t.id_trucker 
+        FROM "USER" u
+        INNER JOIN trucker t ON u.id_user = t.id_user
+        WHERE u.id_user = ?;
+        """
+        ).use { ps ->
+            ps.setInt(1, idUser)
+            ps.executeQuery().use { rs ->
+                if (rs.next()) {
+                    return rs.getInt("id_trucker") // Devuelve el ID del trucker
+                }
+            }
+        }
+        return null // Si no se encuentra, devuelve null
+    }
+
+    fun aceptarSolicitud(idTrucker: Int, orderId: Int) {
+        PostgresqlConexion.getConexion().prepareStatement(
+            """
+        UPDATE "ORDER"
+        SET status_order = ?, id_trucker = ?, coordenates_x_order_end = -70.14129193434847, coordenates_y_order_end = -20.219767752933535
+        WHERE id_order = ?;
+        """
+        ).use { ps ->
+            ps.setString(1, "Progreso") // Cambia el estado a "Progreso"
+            ps.setInt(2, idTrucker)     // Asigna el ID del trucker
+            ps.setInt(3, orderId)       // Filtra por el ID de la orden
+            ps.executeUpdate()          // Ejecuta la actualización
+        }
+    }
+
+
+
     fun insertarOrden(userId: Int, latitude: Double, longitude: Double, peso: Double, metodoPago: String, monto: Double, address: String): Int? {
         val query = """
         INSERT INTO "ORDER" (coordenates_y_order_start, coordenates_x_order_start, weight_order, payment_method_order, value_order, id_user, status_order, address_order_start) 
@@ -142,6 +180,36 @@ object UserDao {
             ps.executeUpdate()
         }
     }
+
+
+    fun obtenerOrdenes(): List<Map<String, String>> {
+        val query = """
+     SELECT u.id_user, u.name_user, o.weight_order, o.value_order, o.address_order_start, o.id_order
+         FROM "USER" u
+         JOIN "ORDER" o ON u.id_user = o.id_user
+ """.trimIndent()
+
+        val listaOrdenes = mutableListOf<Map<String, String>>()
+
+        PostgresqlConexion.getConexion().prepareStatement(query).use { ps ->
+            ps.executeQuery().use { rs ->
+                while (rs.next()) {
+                    listaOrdenes.add(
+                        mapOf(
+                            "name_user" to rs.getString("name_user"),
+                            "weight_order" to rs.getString("weight_order"),
+                            "address_order_start" to rs.getString("address_order_start"),
+                            "id_order" to rs.getString("id_order")
+                        )
+                    )
+                }
+            }
+        }
+        return listaOrdenes
+    }
+
+
+
     /*private fun registrar(producto: ProductoModel) {
         PostgresqlConexion.getConexion().prepareStatement(
             "INSERT INTO producto (descripcion, codigobarra, precio) VALUES (?, ?, ?);"

@@ -95,6 +95,11 @@ class mapaSeguimiento : AppCompatActivity(), OnMapReadyCallback {
     private fun createRoute()
     {
         val idOrder = intent.getIntExtra("id_order", -1)
+        if (idOrder == -1) {
+            Log.e("mapaSeguimiento", "idOrder no recibido o valor por defecto: $idOrder")
+        } else {
+            Log.d("mapaSeguimiento", "idOrder recibido correctamente: $idOrder")
+        }
         val start_lng = UserDao.buscarDoubleOrden(idOrder, "coordenates_x_order_start")
         val start_lat = UserDao.buscarDoubleOrden(idOrder, "coordenates_y_order_start")
         val end_lat = UserDao.buscarDoubleOrden(idOrder, "coordenates_y_order_end")

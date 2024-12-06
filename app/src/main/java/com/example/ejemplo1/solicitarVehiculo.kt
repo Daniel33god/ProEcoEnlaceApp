@@ -119,7 +119,7 @@ class solicitarVehiculo : AppCompatActivity(), OnMapReadyCallback {
 
                 // Agrega un nuevo marcador
                 currentMarker = mMap.addMarker(
-                    MarkerOptions().position(latLng).title("Ubicación: $address")
+                    MarkerOptions().position(latLng).title(address)
                 )
 
                 // Mueve la cámara al nuevo marcador
@@ -133,6 +133,7 @@ class solicitarVehiculo : AppCompatActivity(), OnMapReadyCallback {
             Toast.makeText(this, "Error al geocodificar la dirección", Toast.LENGTH_SHORT).show()
         }
     }
+
 
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
