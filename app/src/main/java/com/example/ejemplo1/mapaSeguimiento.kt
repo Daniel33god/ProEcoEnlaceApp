@@ -53,9 +53,12 @@ class mapaSeguimiento : AppCompatActivity(), OnMapReadyCallback {
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
+        val idOrder = intent.getIntExtra("id_order", -1)
         val ingresarButton2 = findViewById<Button>(R.id.button5)
         ingresarButton2.setOnClickListener {
-            val intent = Intent(this, CalificacionConductor::class.java)
+            val intent = Intent(this@mapaSeguimiento, CalificacionConductor::class.java).apply {
+                putExtra("id_order", idOrder) // Asegúrate de enviarlo como Int
+            }
             startActivity(intent) // Navegar a la nueva pantalla
         }
 

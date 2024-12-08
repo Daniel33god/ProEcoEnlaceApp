@@ -132,6 +132,25 @@ object UserDao {
         return null // Si no se encuentra, devuelve null
     }
 
+    fun obtenerNameTrucker2(idUser: Int): String? {
+        PostgresqlConexion.getConexion().prepareStatement(
+            """
+        SELECT o.id_trucker, t.name_user 
+		FROM "ORDER" o 
+		JOIN trucker t on o.id_trucker = t.id_trucker 
+		WHERE id_order = ?;
+        """
+        ).use { ps ->
+            ps.setInt(1, idUser)
+            ps.executeQuery().use { rs ->
+                if (rs.next()) {
+                    return rs.getString("name_user") // Devuelve el ID del trucker
+                }
+            }
+        }
+        return null // Si no se encuentra, devuelve null
+    }
+
     fun aceptarSolicitud(idTrucker: Int, orderId: Int) {
         PostgresqlConexion.getConexion().prepareStatement(
             """

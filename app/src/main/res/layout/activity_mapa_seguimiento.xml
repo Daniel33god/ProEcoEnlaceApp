@@ -14,22 +14,29 @@
         android:background="#009688"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         android:elevation="4dp"
-        map:title="Bienvenido"
+        map:title=""
         map:titleTextColor="@android:color/white"
         tools:ignore="MissingConstraints" />
 
+    <!-- Título -->
+
+    <!-- Título -->
+
     <TextView
-        android:id="@+id/welcomeText"
-        android:layout_width="254dp"
-        android:layout_height="81dp"
+        android:id="@+id/textViewTitulo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginStart="77dp"
-        android:layout_marginTop="108dp"
-        android:layout_marginEnd="80dp"
-        android:text="El Vehiculo esta en camino"
-        android:textSize="24sp" />
+        android:layout_marginStart="59dp"
+        android:layout_marginTop="150dp"
+        android:layout_marginEnd="70dp"
+        android:layout_marginBottom="30dp"
+        android:gravity="center"
+        android:text="El Vehiculo es en camino a su Ubicación"
+        android:textSize="25sp"
+        android:textStyle="bold" />
 
     <fragment
         android:id="@+id/map"
