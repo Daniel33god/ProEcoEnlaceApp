@@ -203,7 +203,7 @@ object UserDao {
 
     fun obtenerOrdenes(): List<Map<String, String>> {
         val query = """
-     SELECT u.id_user, u.name_user, o.weight_order, o.value_order, o.address_order_start, o.id_order
+     SELECT u.id_user, u.name_user, o.weight_order, o.value_order, o.address_order_start, o.value_order, o.id_order
          FROM "USER" u
          JOIN "ORDER" o ON u.id_user = o.id_user WHERE o.status_order = 'Espera';
  """.trimIndent()
@@ -217,6 +217,36 @@ object UserDao {
                         mapOf(
                             "name_user" to rs.getString("name_user"),
                             "weight_order" to rs.getString("weight_order"),
+                            "value_order" to rs.getString("value_order"),
+                            "address_order_start" to rs.getString("address_order_start"),
+                            "id_order" to rs.getString("id_order")
+                        )
+                    )
+                }
+            }
+        }
+        return listaOrdenes
+    }
+
+    fun obtenerOrdenesRealizadas(): List<Map<String, String>> {
+        val query = """
+     SELECT u.id_user, u.name_user, o.weight_order, o.value_order, o.address_order_start, o.value_order, o.ranking_trucker_order, o.comment_trucker_order, o.id_order
+         FROM "USER" u
+         JOIN "ORDER" o ON u.id_user = o.id_user WHERE o.status_order = 'Completado';
+ """.trimIndent()
+
+        val listaOrdenes = mutableListOf<Map<String, String>>()
+
+        PostgresqlConexion.getConexion().prepareStatement(query).use { ps ->
+            ps.executeQuery().use { rs ->
+                while (rs.next()) {
+                    listaOrdenes.add(
+                        mapOf(
+                            "name_user" to rs.getString("name_user"),
+                            "weight_order" to rs.getString("weight_order"),
+                            "value_order" to rs.getString("value_order"),
+                            "ranking_trucker_order" to rs.getString("ranking_trucker_order"),
+                            "comment_trucker_order" to rs.getString("comment_trucker_order"),
                             "address_order_start" to rs.getString("address_order_start"),
                             "id_order" to rs.getString("id_order")
                         )

@@ -34,6 +34,12 @@ class Conductor : AppCompatActivity() {
             startActivity(intent) // Navegar a la nueva pantalla
         }
 
+        val ingresarButton2= findViewById<Button>(R.id.button9)
+        ingresarButton2.setOnClickListener {
+            val intent = Intent(this, ordenesRealizadas::class.java)
+            startActivity(intent) // Navegar a la nueva pantalla
+        }
+
         // Recuperar el ID del usuario desde SharedPreferences
         val sharedPreferences = getSharedPreferences("user_session", MODE_PRIVATE)
         val userId = sharedPreferences.getInt("user_id", -1)

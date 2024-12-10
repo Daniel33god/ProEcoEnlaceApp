@@ -7,14 +7,17 @@ import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import com.example.ejemplo1.data.dao.UserDao
 
-class VerOrdenes : AppCompatActivity() {
-
+class ordenesRealizadas : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_ver_ordenes)
+        enableEdgeToEdge()
+        setContentView(R.layout.activity_ordenes_realizadas)
 
         val ingresarButton = findViewById<Button>(R.id.button12)
         ingresarButton.setOnClickListener {
@@ -29,7 +32,7 @@ class VerOrdenes : AppCompatActivity() {
 
         // Llamar a obtenerOrdenes desde UserDao
         try {
-            val ordenes = UserDao.obtenerOrdenes()
+            val ordenes = UserDao.obtenerOrdenesRealizadas()
             if (ordenes.isEmpty()) {
                 Toast.makeText(this, "No hay órdenes disponibles.", Toast.LENGTH_SHORT).show()
             } else {
@@ -70,27 +73,16 @@ class VerOrdenes : AppCompatActivity() {
                         setPadding(0, 0, 0, 4) // Espacio entre los elementos
                     }
 
-                    // Crear un botón para redirigir al mapa de seguimiento
-                    val followButton = Button(this).apply {
-                        text = "Aceptar Solicitud"
-                        setOnClickListener {
-                            // Recuperar el id_order de la orden actual
-                            val idOrder = order["id_order"] as? String
+                    val rankingTextView = TextView(this).apply {
+                        text = "Calificación: ${order["ranking_trucker_order"]} estrellas"
+                        gravity = Gravity.CENTER
+                        setPadding(0, 0, 0, 4) // Espacio entre los elementos
+                    }
 
-                            val idTrucker = UserDao.obtenerIdTrucker(userId)
-
-                            if (idTrucker != null) {
-                                if (idOrder != null) {
-                                    UserDao.aceptarSolicitud(idTrucker, idOrder.toInt())
-                                    // Navegar a la pantalla "MapaSeguimiento"
-                                    val intent = Intent(this@VerOrdenes, mapaSeguimiento::class.java).apply {
-                                        putExtra("id_order", idOrder.toInt()) // Asegúrate de enviarlo como Int
-                                        putExtra("is_trucker", true)
-                                    }
-                                    startActivity(intent)
-                                }
-                            }
-                        }
+                    val commentTextView = TextView(this).apply {
+                        text = "Comentario: ${order["comment_trucker_order"]}"
+                        gravity = Gravity.CENTER
+                        setPadding(0, 0, 0, 4) // Espacio entre los elementos
                     }
 
                     // Añadir los TextViews al LinearLayout de la orden
@@ -98,7 +90,8 @@ class VerOrdenes : AppCompatActivity() {
                     orderLayout.addView(weightTextView)
                     orderLayout.addView(valueTextView)
                     orderLayout.addView(addressTextView)
-                    orderLayout.addView(followButton)  // Añadir el botón debajo de los detalles de la orden
+                    orderLayout.addView(rankingTextView)
+                    orderLayout.addView(commentTextView)
 
                     // Añadir este LinearLayout al LinearLayout principal (ordersLayout)
                     ordersLayout.addView(orderLayout)
@@ -109,4 +102,3 @@ class VerOrdenes : AppCompatActivity() {
         }
     }
 }
-
