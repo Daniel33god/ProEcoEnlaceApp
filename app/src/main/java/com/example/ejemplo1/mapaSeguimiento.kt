@@ -115,7 +115,7 @@ class mapaSeguimiento : AppCompatActivity(), OnMapReadyCallback {
         mMap.addMarker(MarkerOptions().position(destino).title("Reciclador"))
         CoroutineScope(Dispatchers.IO).launch {
             val call = getRetrofit().create(ApiService::class.java)
-                .getRoute("5b3ce3597851110001cf6248a1c19d4960ff45a5b22d6da339c9312d", start, end)
+                .getRoute("5b3ce3597851110001cf6248a1c19d4960ff45a5b22d6da339c9312d", end, start)
             if (call.isSuccessful) {
                 getListCoordinates(call.body())
                 drawRoute(call.body(), inicio!!, destino!!)
