@@ -205,7 +205,7 @@ object UserDao {
         val query = """
      SELECT u.id_user, u.name_user, o.weight_order, o.value_order, o.address_order_start, o.id_order
          FROM "USER" u
-         JOIN "ORDER" o ON u.id_user = o.id_user
+         JOIN "ORDER" o ON u.id_user = o.id_user WHERE o.status_order = 'Espera';
  """.trimIndent()
 
         val listaOrdenes = mutableListOf<Map<String, String>>()

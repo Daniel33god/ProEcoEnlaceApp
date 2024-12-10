@@ -54,10 +54,21 @@ class mapaSeguimiento : AppCompatActivity(), OnMapReadyCallback {
         mapFragment.getMapAsync(this)
 
         val idOrder = intent.getIntExtra("id_order", -1)
+        val isTrucker = intent.getBooleanExtra("is_trucker", false)
+        println(isTrucker)
         val ingresarButton2 = findViewById<Button>(R.id.button5)
+        var intent: Intent? = null
         ingresarButton2.setOnClickListener {
-            val intent = Intent(this@mapaSeguimiento, CalificacionConductor::class.java).apply {
-                putExtra("id_order", idOrder) // Asegúrate de enviarlo como Int
+            if(isTrucker.equals(false))
+            {
+                intent = Intent(this@mapaSeguimiento, CalificacionConductor::class.java).apply {
+                    putExtra("id_order", idOrder) // Asegúrate de enviarlo como Int
+                }
+            }
+            else
+            {
+                intent = Intent(this@mapaSeguimiento, Conductor::class.java).apply {
+                }
             }
             startActivity(intent) // Navegar a la nueva pantalla
         }

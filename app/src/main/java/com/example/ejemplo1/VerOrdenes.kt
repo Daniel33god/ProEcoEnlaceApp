@@ -79,6 +79,7 @@ class VerOrdenes : AppCompatActivity() {
                                     // Navegar a la pantalla "MapaSeguimiento"
                                     val intent = Intent(this@VerOrdenes, mapaSeguimiento::class.java).apply {
                                         putExtra("id_order", idOrder.toInt()) // Asegúrate de enviarlo como Int
+                                        putExtra("is_trucker", true)
                                     }
                                     startActivity(intent)
                                 }
