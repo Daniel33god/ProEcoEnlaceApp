@@ -127,21 +127,6 @@ class mapaSeguimiento : AppCompatActivity(), OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap) {
         this.mMap = googleMap
         createRoute()
-
-
-        // Agrega el marcador inicial y el destino en el mapa
-
-
-        // Dibuja la Polyline entre los dos puntos
-        /*val polylineOptions = PolylineOptions()
-            .add(inicio)
-            .add(destino)
-            .width(5f)
-            .color(Color.BLUE)*/
-
-        //var coordlist: List<List<Double>>? = null
-
-
     }
 
     private fun animateMarkerAlongPath(pathPoints: List<LatLng>) {
