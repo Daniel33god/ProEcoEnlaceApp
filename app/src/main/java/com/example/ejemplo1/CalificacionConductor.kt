@@ -4,6 +4,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import android.widget.EditText
+import android.widget.RatingBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -22,14 +24,36 @@ class CalificacionConductor : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+        // Obtén el id_order del intent
+        val idOrder = intent.getIntExtra("id_order", -1)
+
+        // Obtén referencias a los elementos del layout
+        val ratingBar = findViewById<RatingBar>(R.id.ratingBar)
+        val comentarioEditText = findViewById<EditText>(R.id.editTextTextMultiLine)
+        val enviarButton = findViewById<Button>(R.id.button11)
+
         val ingresarButton2 = findViewById<Button>(R.id.button11)
         ingresarButton2.setOnClickListener {
-            Toast.makeText(this, "Se realizo el reciclaje con exito", Toast.LENGTH_SHORT).show()
-            val intent = Intent(this, usuario::class.java)
-            startActivity(intent) // Navegar a la nueva pantalla
+            if (idOrder != -1) {
+                // Obtén los valores ingresados
+                val rating = ratingBar.rating
+                val comentario = comentarioEditText.text.toString()
+
+                // Llama a la función para actualizar en la base de datos
+                UserDao.calificarConductor(idOrder, rating, comentario)
+
+                // Muestra un mensaje de confirmación
+                Toast.makeText(this, "Calificación enviada con éxito", Toast.LENGTH_SHORT).show()
+
+                // Navega a la pantalla de usuario
+                val intent = Intent(this, usuario::class.java)
+                startActivity(intent)
+            } else {
+                Toast.makeText(this, "Error: No se encontró la orden", Toast.LENGTH_SHORT).show()
+            }
         }
 
-        val idOrder = intent.getIntExtra("id_order", -1)
         // Si hay un usuario autenticado, buscar su nombre
         if (idOrder != -1) {
             val nameTrucker = UserDao.obtenerNameTrucker2(idOrder)

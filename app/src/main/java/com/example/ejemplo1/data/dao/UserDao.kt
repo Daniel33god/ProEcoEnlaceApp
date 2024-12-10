@@ -227,6 +227,20 @@ object UserDao {
         return listaOrdenes
     }
 
+    fun calificarConductor(idOrder: Int, rating: Float, comentario: String) {
+        val query = """
+        UPDATE "ORDER"
+        SET ranking_trucker_order = ?, comment_trucker_order = ?, status_order = 'Completado'
+        WHERE id_order = ?;
+    """.trimIndent()
+
+        PostgresqlConexion.getConexion().prepareStatement(query).use { ps ->
+            ps.setFloat(1, rating)
+            ps.setString(2, comentario)
+            ps.setInt(3, idOrder)
+            ps.executeUpdate()
+        }
+    }
 
 
     /*private fun registrar(producto: ProductoModel) {
