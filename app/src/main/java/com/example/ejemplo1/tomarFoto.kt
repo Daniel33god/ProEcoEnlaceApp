@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
+import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.ImageView
@@ -13,6 +14,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+
 import com.example.ejemplo1.data.dao.UserDao
 
 class tomarFoto : AppCompatActivity() {
@@ -51,7 +53,7 @@ class tomarFoto : AppCompatActivity() {
         val editTextPeso = findViewById<EditText>(R.id.editTextPeso)
         val spinnerMetodo = findViewById<Spinner>(R.id.spinnerMetodo)
         val editTextMonto = findViewById<EditText>(R.id.editTextMonto)
-
+        val reciclable = findViewById<CheckBox>(R.id.reciclable)
         // Recuperar datos pasados desde la actividad anterior
         val latitude = intent.getDoubleExtra("LATITUDE", 0.0)
         val longitude = intent.getDoubleExtra("LONGITUDE", 0.0)
@@ -62,11 +64,17 @@ class tomarFoto : AppCompatActivity() {
         ingresarButton.setOnClickListener {
             val peso = editTextPeso.text.toString().toDoubleOrNull()
             val metodoPago = spinnerMetodo.selectedItem.toString()
-            val monto = editTextMonto.text.toString().toDoubleOrNull()
+            var monto = editTextMonto.text.toString().toDoubleOrNull()
+            var tajo_monto : Double = 0.0
+            if(!reciclable.isChecked && monto != null) {
+                tajo_monto = monto * 0.15
+                monto = monto?.minus(tajo_monto!!)
+            }
+
 
             if (peso != null && monto != null) {
                 // Llamamos al DAO para insertar la orden y obtener el id_order
-                val idOrder = UserDao.insertarOrden(userId, latitude, longitude, peso, metodoPago, monto, address)
+                val idOrder = UserDao.insertarOrden(userId, latitude, longitude, peso, metodoPago, monto, address, tajo_monto, reciclable.isChecked)
 
                 if (idOrder != null) {
                     if (idOrder > -1) {
