@@ -68,7 +68,6 @@ class tomarFoto : AppCompatActivity() {
             var tajo_monto : Double = 0.0
             if(!reciclable.isChecked && monto != null) {
                 tajo_monto = monto * 0.05
-                monto = monto?.minus(tajo_monto!!)
             }
 
 
