@@ -95,11 +95,11 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent) // Navegar a la segunda actividad
         }
 
-        val ingresarButton5= findViewById<Button>(R.id.button13)
+        /*val ingresarButton5= findViewById<Button>(R.id.button13)
         ingresarButton5.setOnClickListener {
             val intent = Intent(this, solicitarVehiculo::class.java)
             startActivity(intent) // Navegar a la nueva pantalla
-        }
+        }*/
 
         val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
         StrictMode.setThreadPolicy(policy)

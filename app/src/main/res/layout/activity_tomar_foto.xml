@@ -55,14 +55,34 @@
             android:visibility="gone" />
 
         <!-- Campo para ingresar monto -->
-        <EditText
-            android:id="@+id/editTextPeso"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:backgroundTint="#673AB7"
-            android:hint="Peso en Kilo"
-            android:inputType="numberDecimal" />
+            android:layout_height="50dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/editTextPeso"
+                    android:layout_width="334dp"
+                    android:layout_height="match_parent"
+                    android:backgroundTint="#673AB7"
+                    android:hint="Peso en Kilogramos"
+                    android:inputType="numberDecimal" />
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/fab"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    app:srcCompat="@android:drawable/ic_menu_info_details" />
+            </LinearLayout>
+
+        </FrameLayout>
+
         <!-- Selector para método de pago -->
         <TextView
             android:layout_width="wrap_content"
@@ -91,11 +111,39 @@
             android:inputType="numberDecimal" />
 
         <!-- Botón para enviar -->
-        <CheckBox
-            android:id="@+id/reciclable"
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="50dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <CheckBox
+                    android:id="@+id/reciclable"
+                    android:layout_width="162dp"
+                    android:layout_height="match_parent"
+                    android:text="¿Desea Reciclar?" />
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/fab_2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    app:srcCompat="@android:drawable/ic_menu_info_details" />
+            </LinearLayout>
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/textView3"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="¿Desea Reciclar?" />
+            android:layout_height="50dp"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            />
 
         <Button
             android:id="@+id/button6"
