@@ -3,6 +3,8 @@ package com.example.ejemplo1
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import android.widget.Button
 import android.widget.CheckBox
@@ -13,12 +15,15 @@ import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.TooltipCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 
 import com.example.ejemplo1.data.dao.UserDao
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.snackbar.Snackbar
 
 class tomarFoto : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,14 +47,24 @@ class tomarFoto : AppCompatActivity() {
 
         val fab: FloatingActionButton = findViewById(R.id.fab)
         val fab_2: FloatingActionButton = findViewById(R.id.fab_2)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            fab.tooltipText = "Para pedidos donde se superen los 1,500 Kg se aplicara un monto adicional de $8.000,\n" +
-                    "por pedidos sobre 5,000 Kg se aplicara un monto adicional de $10.000,\n" +
-                    "y si supera los 10,000 Kg se aplicara un monto adicional de $50.000."
-            fab_2.tooltipText = "Si no desea reciclar se le aplicara una tarifa adicional de un 5% para el tratamiento de sus desechos\n" +
-                    "caso contrario debe organizar sus desechos por tipo (ej. plasticos, papel, organicos, latas, entre otros)."
+        val longTooltip : String = """Para pedidos donde se superen los 1,500 Kg se aplicara un monto adicional de 8.000 pesos, por pedidos sobre 5,000 Kg se aplicara un monto adicional de 10.000 pesos, y si supera los 10,000 Kg se aplicara un monto adicional de 50.000 pesos.""".trimIndent()
+        fab.setOnClickListener{
+            AlertDialog.Builder(this).setTitle("Información Adicional")
+                .setMessage(longTooltip)
+                .setPositiveButton("Entendido") {dialog, _ ->
+                    dialog.dismiss()
+                }
+                .show()
         }
-
+        val longTooltip2 : String = "Si no desea reciclar se le aplicara una tarifa adicional de un 5% para el tratamiento de sus desechos caso contrario debe organizar sus desechos por tipo (ej. plasticos, papel, organicos, latas, entre otros)."
+        fab_2.setOnClickListener{
+            AlertDialog.Builder(this).setTitle("Información Adicional")
+                .setMessage(longTooltip2)
+                .setPositiveButton("Entendido") {dialog, _ ->
+                    dialog.dismiss()
+                }
+                .show()
+        }
         // Configurar el botón para cambiar de pantalla
         val ingresarButton1 = findViewById<ImageButton>(R.id.imageButtonBack)
         ingresarButton1.setOnClickListener {
@@ -73,35 +88,44 @@ class tomarFoto : AppCompatActivity() {
         val address = intent.getStringExtra("ADDRESS") ?: "Dirección desconocida"
 
         val textViewMontoTotal = findViewById<TextView>(R.id.textView3)
-
-        editTextMonto.addTextChangedListener(object : android.text.TextWatcher {
-                override fun afterTextChanged(s: android.text.Editable?)
+        val textWatcher = object : TextWatcher{
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+            override fun afterTextChanged(p0: Editable?) {
+                val monto = editTextMonto.text.toString().toDoubleOrNull() ?: 0.0
+                val peso = editTextPeso.text.toString().toDoubleOrNull() ?: 0.0
+                if (monto != null)
                 {
-                    val monto = s.toString().toDoubleOrNull()
-                    if (monto != null)
-                    {
-                        var impuesto = 0.0
-                        if(!reciclable.isChecked) {
-                            impuesto = monto * 0.05
-                        }
-                        val montoTotal = monto + impuesto
-                        textViewMontoTotal.text = "Monto total con tarifa incluida: $%.2f".format(montoTotal)
-                        textViewMontoTotal.visibility = View.VISIBLE
+                    var impuesto = 0.0
+                    var tarifa_peso = 0.0
+                    if(!reciclable.isChecked) {
+                        impuesto = monto * 0.05
                     }
-                    else
+                    if(peso!! >= 1501 && peso!! <= 5000)
                     {
-                        textViewMontoTotal.visibility = View.GONE
+                        tarifa_peso = 8000.0
                     }
+                    else if(peso!! >= 5001 && peso!! <= 10000)
+                    {
+                        tarifa_peso = 10000.0
+                    }
+                    else if(peso!! >= 10001)
+                    {
+                        tarifa_peso = 50000.0
+                    }
+                    val montoTotal = monto + impuesto + tarifa_peso
+                    textViewMontoTotal.text = "Monto total con tarifa incluida: $%.2f".format(montoTotal)
+                    textViewMontoTotal.visibility = View.VISIBLE
                 }
-
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                TODO("Not yet implemented")
+                else
+                {
+                    textViewMontoTotal.visibility = View.GONE
+                }
             }
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                TODO("Not yet implemented")
-            }
-        })
+        }
+        editTextMonto.addTextChangedListener(textWatcher)
+        editTextPeso.addTextChangedListener(textWatcher)
+        reciclable.addTextChangedListener(textWatcher)
 
         ingresarButton.setOnClickListener {
             val peso = editTextPeso.text.toString().toDoubleOrNull()
@@ -112,9 +136,23 @@ class tomarFoto : AppCompatActivity() {
                 return@setOnClickListener
             }*/
             var tajo_monto : Double = 0.0
+            var tarifa_peso : Double = 0.0
             if(!reciclable.isChecked && monto != null) {
                 tajo_monto = monto * 0.05
             }
+            if(peso!! >= 1501 && peso!! <= 5000)
+            {
+                tarifa_peso = 8000.0
+            }
+            else if(peso!! >= 5001 && peso!! <= 10000)
+            {
+                tarifa_peso = 10000.0
+            }
+            else if(peso!! >= 10001)
+            {
+                tarifa_peso = 50000.0
+            }
+            monto = monto!! + tajo_monto + tarifa_peso
 
 
             if (peso != null && monto != null) {
