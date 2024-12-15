@@ -1,6 +1,7 @@
 package com.example.ejemplo1
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
@@ -9,6 +10,7 @@ import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.Spinner
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -16,6 +18,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 
 import com.example.ejemplo1.data.dao.UserDao
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class tomarFoto : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,6 +38,16 @@ class tomarFoto : AppCompatActivity() {
             // Cargar la imagen desde los recursos drawable
             imageView.setImageResource(R.drawable.basurareciclada)
             imageView.visibility = View.VISIBLE
+        }
+
+        val fab: FloatingActionButton = findViewById(R.id.fab)
+        val fab_2: FloatingActionButton = findViewById(R.id.fab_2)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            fab.tooltipText = "Para pedidos donde se superen los 1,500 Kg se aplicara un monto adicional de $8.000,\n" +
+                    "por pedidos sobre 5,000 Kg se aplicara un monto adicional de $10.000,\n" +
+                    "y si supera los 10,000 Kg se aplicara un monto adicional de $50.000."
+            fab_2.tooltipText = "Si no desea reciclar se le aplicara una tarifa adicional de un 5% para el tratamiento de sus desechos\n" +
+                    "caso contrario debe organizar sus desechos por tipo (ej. plasticos, papel, organicos, latas, entre otros)."
         }
 
         // Configurar el botón para cambiar de pantalla
@@ -59,12 +72,45 @@ class tomarFoto : AppCompatActivity() {
         val longitude = intent.getDoubleExtra("LONGITUDE", 0.0)
         val address = intent.getStringExtra("ADDRESS") ?: "Dirección desconocida"
 
+        val textViewMontoTotal = findViewById<TextView>(R.id.textView3)
 
+        editTextMonto.addTextChangedListener(object : android.text.TextWatcher {
+                override fun afterTextChanged(s: android.text.Editable?)
+                {
+                    val monto = s.toString().toDoubleOrNull()
+                    if (monto != null)
+                    {
+                        var impuesto = 0.0
+                        if(!reciclable.isChecked) {
+                            impuesto = monto * 0.05
+                        }
+                        val montoTotal = monto + impuesto
+                        textViewMontoTotal.text = "Monto total con tarifa incluida: $%.2f".format(montoTotal)
+                        textViewMontoTotal.visibility = View.VISIBLE
+                    }
+                    else
+                    {
+                        textViewMontoTotal.visibility = View.GONE
+                    }
+                }
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                TODO("Not yet implemented")
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                TODO("Not yet implemented")
+            }
+        })
 
         ingresarButton.setOnClickListener {
             val peso = editTextPeso.text.toString().toDoubleOrNull()
             val metodoPago = spinnerMetodo.selectedItem.toString()
             var monto = editTextMonto.text.toString().toDoubleOrNull()
+            /*if (peso == null || monto == null) {
+                Toast.makeText(this, "Por favor ingresa valores válidos para Peso y Monto", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }*/
             var tajo_monto : Double = 0.0
             if(!reciclable.isChecked && monto != null) {
                 tajo_monto = monto * 0.05
