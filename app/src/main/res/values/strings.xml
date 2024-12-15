@@ -15,5 +15,10 @@
         <item>Paypal</item>
         <item>Efectivo</item>
     </string-array>
+    <string-array name="cuenta">
+        <item>Seleccione su Tipo de Cuenta</item>
+        <item>Usuario</item>
+        <item>Conductor</item>
+    </string-array>
 
 </resources>
