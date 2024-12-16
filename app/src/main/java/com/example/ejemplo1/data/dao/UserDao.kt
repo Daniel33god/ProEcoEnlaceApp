@@ -1,8 +1,11 @@
 package com.example.ejemplo1.data.dao
 
+import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
+import android.widget.EditText
 import com.example.ejemplo1.data.model.UserModel
+import java.sql.SQLException
 
 object UserDao {
     fun listar_usuario(): List<UserModel> {
@@ -28,8 +31,128 @@ object UserDao {
         return lista
     }
 
+    // Método para insertar una cuenta de usuario en la tabla "USER"
+    fun insertarCuentaUsuario(
+        name: String, lastName: String, dni: String, email: String, phone: String,
+        address: String, password: String, gender: String, birthDate: String
+    ): Int? {
+        // Consulta SQL para insertar un usuario en la base de datos
+        val query = """
+        INSERT INTO "USER" (name_user, last_name_user, dni_user, email_user, phone_user, address_user, password_user, gender_user, birthdate_user)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
+    """.trimIndent()
+
+        try {
+            // Preparamos la sentencia SQL
+            PostgresqlConexion.getConexion().prepareStatement(query).use { ps ->
+                // Asignación de los parámetros al PreparedStatement
+                ps.setString(1, name)
+                ps.setString(2, lastName)
+                ps.setString(3, dni)
+                ps.setString(4, email)
+                ps.setString(5, phone)
+                ps.setString(6, address)
+                ps.setString(7, password)
+                ps.setString(8, gender)
+                ps.setString(9, birthDate)
+
+                val resultSet = ps.executeQuery()
+                if (resultSet.next()) {
+                    return resultSet.getInt("id_user")
+                }
+            }
+        } catch (e: SQLException) {
+            e.printStackTrace()
+        }
+        return null
+    }
+
+    fun insertarCuentaConductor(
+        idUser: Int, name: String, lastName: String, dni: String, email: String,
+        phone: String, address: String, password: String, gender: String,
+        patente: String, licencia: String, descripcion: String
+    ): Int? {
+        val query = """
+        INSERT INTO trucker (id_user, name_user, last_name_user, dni_user, email_user, phone_user, address_user, password_user, gender_user, matricula_truck, type_license_trucker, description_trucker)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id_trucker;
+    """.trimIndent()
+
+        try {
+            PostgresqlConexion.getConexion().prepareStatement(query).use { ps ->
+                ps.setInt(1, idUser)
+                ps.setString(2, name)
+                ps.setString(3, lastName)
+                ps.setString(4, dni)
+                ps.setString(5, email)
+                ps.setString(6, phone)
+                ps.setString(7, address)
+                ps.setString(8, password)
+                ps.setString(9, gender)
+                ps.setString(10, patente)
+                ps.setString(11, licencia)
+                ps.setString(12, descripcion)
+
+                val resultSet = ps.executeQuery()
+                if (resultSet.next()) {
+                    return resultSet.getInt("id_trucker")
+                }
+            }
+        } catch (e: SQLException) {
+            e.printStackTrace()
+        }
+        return null
+    }
+
+    fun insertarCamion(
+        idUser: Int, matricula: String, modelo: String, pesoMax: Int, idTrucker: Int
+    ): Boolean {
+        val query = """
+        INSERT INTO truck (id_user, matricula_truck, model_truck, is_certificated_truck, is_active_truck, max_weight_truck, id_trucker)
+        VALUES (?, ?, ?, true, 'Activo', ?, ?);
+    """.trimIndent()
+
+        try {
+            PostgresqlConexion.getConexion().prepareStatement(query).use { ps ->
+                ps.setInt(1, idUser)
+                ps.setString(2, matricula)
+                ps.setString(3, modelo)
+                ps.setInt(4, pesoMax)
+                ps.setInt(5, idTrucker)
+
+                val rowsAffected = ps.executeUpdate()
+                return rowsAffected > 0
+            }
+        } catch (e: SQLException) {
+            e.printStackTrace()
+        }
+        return false
+    }
+
+    fun cuentaConductor(
+        name: String, lastName: String, dni: String, email: String, phone: String,
+        address: String, password: String, gender: String, birthDate: String,
+        patente: String, modelo: String, pesoMax: Int, licencia: String, descripcion: String
+    ): Boolean {
+        // Crear usuario
+        val idUser = insertarCuentaUsuario(name, lastName, dni, email, phone, address, password, gender, birthDate)
+        if (idUser == null) {
+            return false // Si no se pudo crear el usuario, retorna false
+        }
+
+        // Crear conductor
+        val idTrucker = insertarCuentaConductor(idUser, name, lastName, dni, email, phone, address, password, gender, patente, licencia, descripcion)
+        if (idTrucker == null) {
+            return false // Si no se pudo crear el conductor, retorna false
+        }
+
+        // Crear camión
+        return insertarCamion(idUser, patente, modelo, pesoMax, idTrucker)
+    }
+
+
+
+
     fun buscar_usuario(email:String,password:String): Int?{
-        var lista = mutableListOf<UserModel>()
         PostgresqlConexion.getConexion().prepareStatement(
             "SELECT * FROM \"USER\" WHERE email_user = ? AND password_user = ?;"
         ).use { ps ->
@@ -72,6 +195,7 @@ object UserDao {
         }
         return null // Si no se encuentra, devuelve null
     }
+
     fun buscarStringOrden(id_order:Int, returnalVal: String): String? {
         PostgresqlConexion.getConexion().prepareStatement(
             "SELECT * FROM \"ORDER\" WHERE id_order = ?;"
@@ -85,6 +209,7 @@ object UserDao {
         }
         return null // Si no se encuentra, devuelve null
     }
+
     fun buscarDoubleOrden(id_order:Int, returnalVal: String): Double? {
         PostgresqlConexion.getConexion().prepareStatement(
             "SELECT * FROM \"ORDER\" WHERE id_order = ?;"

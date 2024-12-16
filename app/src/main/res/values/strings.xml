@@ -20,5 +20,13 @@
         <item>Usuario</item>
         <item>Conductor</item>
     </string-array>
+    <string-array name="tipoLicencia">
+        <item>Seleccione su Tipo de Licencia</item>
+        <item>Clase A</item>
+        <item>Clase B</item>
+        <item>Clase C</item>
+        <item>Clase D</item>
+        <item>Clase E</item>
+    </string-array>
 
 </resources>
