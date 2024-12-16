@@ -3,9 +3,14 @@ package com.example.ejemplo1.data.dao
 import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
+import android.util.Log
 import android.widget.EditText
 import com.example.ejemplo1.data.model.UserModel
+import java.sql.Date
 import java.sql.SQLException
+import java.text.ParseException
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 object UserDao {
     fun listar_usuario(): List<UserModel> {
@@ -39,7 +44,7 @@ object UserDao {
         // Consulta SQL para insertar un usuario en la base de datos
         val query = """
         INSERT INTO "USER" (name_user, last_name_user, dni_user, email_user, phone_user, address_user, password_user, gender_user, birthdate_user)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id_user;
     """.trimIndent()
 
         try {
@@ -54,7 +59,16 @@ object UserDao {
                 ps.setString(6, address)
                 ps.setString(7, password)
                 ps.setString(8, gender)
-                ps.setString(9, birthDate)
+                try {
+                    val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                    val utilDate = sdf.parse(birthDate)
+                    val sqlDate = java.sql.Date(utilDate.time)
+                    ps.setDate(9, sqlDate)
+                } catch (e: ParseException) {
+                    // Log the error or handle the invalid date
+                    Log.e("DateParsing", "Invalid date format: $birthDate", e)
+                    // Optionally, show an error to the user
+                }
 
                 val resultSet = ps.executeQuery()
                 if (resultSet.next()) {
@@ -73,8 +87,8 @@ object UserDao {
         patente: String, licencia: String, descripcion: String
     ): Int? {
         val query = """
-        INSERT INTO trucker (id_user, name_user, last_name_user, dni_user, email_user, phone_user, address_user, password_user, gender_user, matricula_truck, type_license_trucker, description_trucker)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id_trucker;
+        INSERT INTO trucker (id_user, name_user, last_name_user, dni_user, email_user, phone_user, address_user, password_user, gender_user, type_license_trucker, description_trucker)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id_trucker;
     """.trimIndent()
 
         try {
@@ -88,9 +102,9 @@ object UserDao {
                 ps.setString(7, address)
                 ps.setString(8, password)
                 ps.setString(9, gender)
-                ps.setString(10, patente)
-                ps.setString(11, licencia)
-                ps.setString(12, descripcion)
+                //ps.setString(10, patente)
+                ps.setString(10, licencia)
+                ps.setString(11, descripcion)
 
                 val resultSet = ps.executeQuery()
                 if (resultSet.next()) {
@@ -146,11 +160,25 @@ object UserDao {
         }
 
         // Crear camión
-        return insertarCamion(idUser, patente, modelo, pesoMax, idTrucker)
+        insertarCamion(idUser, patente, modelo, pesoMax, idTrucker)
+        return actualizarCamioneroMatricula(idTrucker, patente)
     }
 
 
-
+    fun actualizarCamioneroMatricula(idTrucker: Int, matricula: String): Boolean {
+        PostgresqlConexion.getConexion().prepareStatement(
+            """
+        UPDATE "trucker"
+        SET matricula_truck = ?
+        WHERE id_trucker = ?;
+        """
+        ).use { ps ->
+            ps.setString(1, matricula) // Cambia el estado a "Progreso"
+            ps.setInt(2, idTrucker)     // Asigna el ID del trucker
+            ps.executeUpdate()          // Ejecuta la actualización
+        }
+        return true
+    }
 
     fun buscar_usuario(email:String,password:String): Int?{
         PostgresqlConexion.getConexion().prepareStatement(

@@ -53,17 +53,17 @@ class crearCuentaConductor : AppCompatActivity() {
         }
 
         // Configurar el botón "Ingresar" para cambiar de pantalla
-        val ingresarButton2 = findViewById<Button>(R.id.button2)
+        val ingresarButton2 = findViewById<Button>(R.id.button)
         ingresarButton2.setOnClickListener {
             // Llamar al método insertarCuentaUsuario para insertar el usuario
             val isSuccess = UserDao.cuentaConductor(name.toString(),
                 lastName.toString(), dni.toString(), email.toString(), phone.toString(),
                 address.toString(), password.toString(), gender.toString(), birthDate.toString(),
-                patente.toString(), modelo.toString(), pesoMax, licencia.toString(), descripcion.toString())
+                patente.text.toString(), modelo.text.toString(), pesoMax.text.toString().toInt(), licencia.selectedItem.toString(), descripcion.text.toString())
 
             if (isSuccess) {
                 Toast.makeText(this, "Cuenta Conductor creada con éxito", Toast.LENGTH_SHORT).show()
-                val intent = Intent(this, crearCuenta::class.java)
+                val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent) // Navegar a la nueva pantalla
             }else {
                 Toast.makeText(this, "Error al crear la cuenta", Toast.LENGTH_SHORT).show()

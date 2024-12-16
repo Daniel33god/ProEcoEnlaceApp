@@ -74,9 +74,9 @@ class crearCuenta : AppCompatActivity() {
                 "Usuario" -> {
 
                     // Llamar al método insertarCuentaUsuario para insertar el usuario
-                    val isSuccess = UserDao.insertarCuentaUsuario(name.toString(),
-                        lastName.toString(), dni.toString(), email.toString(), phone.toString(),
-                        address.toString(), password.toString(), gender.toString(), birthDate.toString()
+                    val isSuccess = UserDao.insertarCuentaUsuario(name.text.toString(),
+                        lastName.text.toString(), dni.text.toString(), email.text.toString(), phone.text.toString(),
+                        address.text.toString(), password.text.toString(), gender.selectedItem.toString(), birthDate.text.toString()
                     )
 
                     if (isSuccess != null) {
