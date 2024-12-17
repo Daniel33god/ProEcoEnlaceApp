@@ -27,6 +27,13 @@ class usuario : AppCompatActivity() {
             startActivity(intent) // Navegar a la nueva pantalla
         }
 
+        // Configurar el botón "Ingresar" para cambiar de pantalla
+        val ingresarButton3 = findViewById<Button>(R.id.button13)
+        ingresarButton3.setOnClickListener {
+            val intent = Intent(this, vehiculoDisponible::class.java)
+            startActivity(intent) // Navegar a la nueva pantalla
+        }
+
 
         // Recuperar el ID del usuario desde SharedPreferences
         val sharedPreferences = getSharedPreferences("user_session", MODE_PRIVATE)

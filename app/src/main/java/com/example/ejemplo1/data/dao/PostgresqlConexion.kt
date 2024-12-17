@@ -9,9 +9,10 @@ object PostgresqlConexion {
             /*"jdbc:postgresql://magallanes.inf.unap.cl:5432/lmartinez",
             "lmartinez",
             "3s88QLK3sK"*/
+
             "jdbc:postgresql://10.0.2.2:5432/postgres",
             "postgres",
-            "123"
+            "1234"
         )
     }
 }

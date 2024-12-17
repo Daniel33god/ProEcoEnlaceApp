@@ -17,6 +17,9 @@
         android:theme="@style/Theme.Ejemplo1"
         tools:targetApi="31">
         <activity
+            android:name=".ofrecerPrecio"
+            android:exported="false" />
+        <activity
             android:name=".crearCuentaConductor"
             android:exported="false" />
         <activity

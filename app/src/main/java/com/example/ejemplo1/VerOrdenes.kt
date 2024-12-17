@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Gravity
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
@@ -64,15 +65,34 @@ class VerOrdenes : AppCompatActivity() {
                         setPadding(0, 0, 0, 4) // Espacio entre los elementos
                     }
 
+                    val metodTextView = TextView(this).apply {
+                        text = "Metodo de Pago: ${order["payment_method_order"]}"
+                        gravity = Gravity.CENTER
+                        setPadding(0, 0, 0, 4) // Espacio entre los elementos
+                    }
+
                     val addressTextView = TextView(this).apply {
                         text = "Dirección: ${order["address_order_start"]}"
                         gravity = Gravity.CENTER
                         setPadding(0, 0, 0, 4) // Espacio entre los elementos
                     }
 
+                    // Crear un ImageView para mostrar la imagen de "basurareciclada.jpg"
+                    val imageView = ImageView(this).apply {
+                        setImageResource(R.drawable.basurareciclada) // Establece la imagen desde drawable
+                        adjustViewBounds = true // Permite que la imagen se ajuste dentro de los límites
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.WRAP_CONTENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        ).apply {
+                            gravity = Gravity.CENTER // Centra la imagen en el layout
+                            setMargins(0, 8, 0, 8) // Margen para separar la imagen de otros elementos
+                        }
+                    }
+
                     // Crear un botón para redirigir al mapa de seguimiento
                     val followButton = Button(this).apply {
-                        text = "Aceptar Solicitud"
+                        text = "Ofrecer Precio"
                         setOnClickListener {
                             // Recuperar el id_order de la orden actual
                             val idOrder = order["id_order"] as? String
@@ -93,11 +113,15 @@ class VerOrdenes : AppCompatActivity() {
                         }
                     }
 
+
+
                     // Añadir los TextViews al LinearLayout de la orden
                     orderLayout.addView(nameTextView)
                     orderLayout.addView(weightTextView)
                     orderLayout.addView(valueTextView)
+                    orderLayout.addView(metodTextView)
                     orderLayout.addView(addressTextView)
+                    orderLayout.addView(imageView)
                     orderLayout.addView(followButton)  // Añadir el botón debajo de los detalles de la orden
 
                     // Añadir este LinearLayout al LinearLayout principal (ordersLayout)

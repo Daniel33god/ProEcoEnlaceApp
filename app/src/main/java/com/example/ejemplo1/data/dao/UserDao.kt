@@ -358,7 +358,7 @@ object UserDao {
 
     fun obtenerOrdenes(): List<Map<String, String>> {
         val query = """
-     SELECT u.id_user, u.name_user, o.weight_order, o.value_order, o.address_order_start, o.value_order, o.id_order
+     SELECT u.id_user, u.name_user, o.weight_order, o.value_order, o.address_order_start, o.value_order, o.id_order, o.payment_method_order
          FROM "USER" u
          JOIN "ORDER" o ON u.id_user = o.id_user WHERE o.status_order = 'Espera';
  """.trimIndent()
@@ -374,6 +374,7 @@ object UserDao {
                             "weight_order" to rs.getString("weight_order"),
                             "value_order" to rs.getString("value_order"),
                             "address_order_start" to rs.getString("address_order_start"),
+                            "payment_method_order" to rs.getString("payment_method_order"),
                             "id_order" to rs.getString("id_order")
                         )
                     )
