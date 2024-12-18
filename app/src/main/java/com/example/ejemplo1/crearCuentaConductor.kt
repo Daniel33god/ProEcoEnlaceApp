@@ -70,5 +70,13 @@ class crearCuentaConductor : AppCompatActivity() {
             }
         }
 
+
+        // Configurar el botón "Ingresar" para cambiar de pantalla
+        val ingresarButton3 = findViewById<Button>(R.id.button2)
+        ingresarButton3.setOnClickListener {
+            val intent = Intent(this, crearCuenta::class.java)
+            startActivity(intent) // Navegar a la nueva pantalla
+        }
+
     }
 }

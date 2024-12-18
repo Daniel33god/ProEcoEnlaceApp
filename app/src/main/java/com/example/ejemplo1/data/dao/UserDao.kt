@@ -83,12 +83,13 @@ object UserDao {
 
     fun insertarCuentaConductor(
         idUser: Int, name: String, lastName: String, dni: String, email: String,
-        phone: String, address: String, password: String, gender: String,
+        phone: String, address: String, password: String, gender: String, birthDate: String,
         patente: String, licencia: String, descripcion: String
     ): Int? {
         val query = """
-        INSERT INTO trucker (id_user, name_user, last_name_user, dni_user, email_user, phone_user, address_user, password_user, gender_user, type_license_trucker, description_trucker)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id_trucker;
+        INSERT INTO trucker (id_user, name_user, last_name_user, dni_user, email_user, phone_user, address_user, password_user, gender_user, birthdate_user,
+        type_license_trucker, description_trucker, ranking_trucker)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0) RETURNING id_trucker;
     """.trimIndent()
 
         try {
@@ -102,9 +103,21 @@ object UserDao {
                 ps.setString(7, address)
                 ps.setString(8, password)
                 ps.setString(9, gender)
+
+                try {
+                    val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                    val utilDate = sdf.parse(birthDate)
+                    val sqlDate = java.sql.Date(utilDate.time)
+                    ps.setDate(10, sqlDate)
+                } catch (e: ParseException) {
+                    // Log the error or handle the invalid date
+                    Log.e("DateParsing", "Invalid date format: $birthDate", e)
+                    // Optionally, show an error to the user
+                }
+                //ps.setString(10, birthDate)
                 //ps.setString(10, patente)
-                ps.setString(10, licencia)
-                ps.setString(11, descripcion)
+                ps.setString(11, licencia)
+                ps.setString(12, descripcion)
 
                 val resultSet = ps.executeQuery()
                 if (resultSet.next()) {
@@ -118,20 +131,19 @@ object UserDao {
     }
 
     fun insertarCamion(
-        idUser: Int, matricula: String, modelo: String, pesoMax: Int, idTrucker: Int
+        matricula: String, modelo: String, pesoMax: Int, idTrucker: Int
     ): Boolean {
         val query = """
-        INSERT INTO truck (id_user, matricula_truck, model_truck, is_certificated_truck, is_active_truck, max_weight_truck, id_trucker)
-        VALUES (?, ?, ?, true, 'Activo', ?, ?);
+        INSERT INTO truck (matricula_truck, model_truck, is_certificated_truck, is_active_truck, max_weight_truck, id_trucker)
+        VALUES (?, ?, true, 'Activo', ?, ?);
     """.trimIndent()
 
         try {
             PostgresqlConexion.getConexion().prepareStatement(query).use { ps ->
-                ps.setInt(1, idUser)
-                ps.setString(2, matricula)
-                ps.setString(3, modelo)
-                ps.setInt(4, pesoMax)
-                ps.setInt(5, idTrucker)
+                ps.setString(1, matricula)
+                ps.setString(2, modelo)
+                ps.setInt(3, pesoMax)
+                ps.setInt(4, idTrucker)
 
                 val rowsAffected = ps.executeUpdate()
                 return rowsAffected > 0
@@ -154,13 +166,13 @@ object UserDao {
         }
 
         // Crear conductor
-        val idTrucker = insertarCuentaConductor(idUser, name, lastName, dni, email, phone, address, password, gender, patente, licencia, descripcion)
+        val idTrucker = insertarCuentaConductor(idUser, name, lastName, dni, email, phone, address, password, gender, birthDate ,patente, licencia, descripcion)
         if (idTrucker == null) {
             return false // Si no se pudo crear el conductor, retorna false
         }
 
         // Crear camión
-        insertarCamion(idUser, patente, modelo, pesoMax, idTrucker)
+        insertarCamion(patente, modelo, pesoMax, idTrucker)
         return actualizarCamioneroMatricula(idTrucker, patente)
     }
 
