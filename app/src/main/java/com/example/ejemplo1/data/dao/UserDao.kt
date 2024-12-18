@@ -333,22 +333,22 @@ object UserDao {
 
 
 
-    fun insertarOrden(userId: Int, latitude: Double, longitude: Double, peso: Double, metodoPago: String, monto: Double, address: String, tajo_monto : Double, is_recyclable : Boolean): Int? {
+    fun insertarOrden(userId: Int, latitude: Double, longitude: Double, metodoPago: String, address: String, is_recyclable : Boolean): Int? {
         val query = """
-        INSERT INTO "ORDER" (coordenates_y_order_start, coordenates_x_order_start, weight_order, payment_method_order, value_order, id_user, status_order, address_order_start, slice_value_order, is_recyclable) 
-        VALUES (?, ?, ?, ?, ?, ?, 'Espera', ?, ?, ?) RETURNING id_order;
+        INSERT INTO "ORDER" (coordenates_y_orderstart, coordenates_x_order_start, payment_method_order, id_user, status_order, address_order_start, is_recyclable) 
+        VALUES (?, ?, ?, ?, 'Espera', ?, ?) RETURNING id_order;
     """.trimIndent()
 
         PostgresqlConexion.getConexion().prepareStatement(query).use { ps ->
             ps.setDouble(1, latitude)
             ps.setDouble(2, longitude)
-            ps.setDouble(3, peso)
-            ps.setString(4, metodoPago)
-            ps.setDouble(5, monto)
-            ps.setInt(6, userId)
-            ps.setString(7, address)
-            ps.setDouble(8, tajo_monto)
-            ps.setBoolean(9, is_recyclable)
+            //ps.setDouble(3, peso)
+            ps.setString(3, metodoPago)
+            //ps.setDouble(5, monto)
+            ps.setInt(4, userId)
+            ps.setString(5, address)
+            //ps.setDouble(8, tajo_monto)
+            ps.setBoolean(6, is_recyclable)
 
             ps.executeQuery().use { rs ->
                 if (rs.next()) {

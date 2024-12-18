@@ -28,9 +28,9 @@ class usuario : AppCompatActivity() {
         }
 
         // Configurar el botón "Ingresar" para cambiar de pantalla
-        val ingresarButton3 = findViewById<Button>(R.id.button13)
+        val ingresarButton3 = findViewById<Button>(R.id.verOrden)
         ingresarButton3.setOnClickListener {
-            val intent = Intent(this, vehiculoDisponible::class.java)
+            val intent = Intent(this, verOrden::class.java)
             startActivity(intent) // Navegar a la nueva pantalla
         }
 

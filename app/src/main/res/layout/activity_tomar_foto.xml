@@ -32,6 +32,7 @@
         android:layout_height="match_parent"
         android:gravity="center"
         android:orientation="vertical"
+        android:layout_marginTop="100dp"
         android:padding="16dp"
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="0dp">
@@ -62,36 +63,7 @@
             android:layout_marginTop="1dp"
             android:visibility="gone" />
 
-        <!-- Campo para ingresar monto -->
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="50dp">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-
-                <EditText
-                    android:id="@+id/editTextPeso"
-                    android:layout_width="334dp"
-                    android:layout_height="match_parent"
-                    android:backgroundTint="#673AB7"
-                    android:hint="Peso en Kilogramos"
-                    android:inputType="numberDecimal" />
-
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:id="@+id/fab"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom|end"
-                    android:layout_weight="1"
-                    android:clickable="true"
-                    app:srcCompat="@android:drawable/ic_menu_info_details" />
-
-            </LinearLayout>
-
-        </FrameLayout>
 
         <!-- Selector para método de pago -->
         <TextView
@@ -110,15 +82,7 @@
             android:entries="@array/metodos"
             android:spinnerMode="dropdown" />
 
-        <!-- Campo para ingresar monto -->
-        <EditText
-            android:id="@+id/editTextMonto"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:backgroundTint="#673AB7"
-            android:hint="Monto"
-            android:inputType="numberDecimal" />
+
 
         <!-- Botón para enviar -->
         <FrameLayout

@@ -2,6 +2,8 @@ package com.example.ejemplo1
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.Gravity
 import android.widget.Button
 import android.widget.ImageView
@@ -13,7 +15,7 @@ import com.example.ejemplo1.data.dao.UserDao
 
 class VerOrdenes : AppCompatActivity() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    /*override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_ver_ordenes)
 
@@ -131,6 +133,145 @@ class VerOrdenes : AppCompatActivity() {
         } catch (e: Exception) {
             Toast.makeText(this, "Error al cargar las órdenes: ${e.message}", Toast.LENGTH_SHORT).show()
         }
+    }*/
+
+    private lateinit var ordersLayout: LinearLayout
+    private val handler = Handler(Looper.getMainLooper())
+    private var updateThread: Thread? = null
+    private var isRunning = true
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_ver_ordenes)
+
+        ordersLayout = findViewById(R.id.ordersLayout)
+
+        val ingresarButton = findViewById<Button>(R.id.button12)
+        ingresarButton.setOnClickListener {
+            val intent = Intent(this, Conductor::class.java)
+            startActivity(intent)
+        }
+
+        startOrderUpdateThread()
     }
+
+    private fun startOrderUpdateThread() {
+        updateThread = Thread {
+            while (isRunning) {
+                try {
+                    // Fetch the latest orders from the database
+                    val ordenes = UserDao.obtenerOrdenes()
+
+                    // Update the UI on the main thread
+                    handler.post {
+                        updateOrders(ordenes)
+                    }
+
+                    // Check for new data every 10 seconds
+                    Thread.sleep(10000)
+                } catch (e: Exception) {
+                    handler.post {
+                        Toast.makeText(this, "Error al cargar las órdenes: ${e.message}", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
+        updateThread?.start()
+    }
+
+    private fun updateOrders(ordenes: List<Map<String, Any>>) {
+        ordersLayout.removeAllViews()
+
+        if (ordenes.isEmpty()) {
+            Toast.makeText(this, "No hay órdenes disponibles.", Toast.LENGTH_SHORT).show()
+        } else {
+            for (order in ordenes) {
+                val orderLayout = LinearLayout(this).apply {
+                    orientation = LinearLayout.VERTICAL
+                    gravity = Gravity.CENTER
+                    setPadding(0, 8, 0, 8)
+                }
+
+                val nameTextView = TextView(this).apply {
+                    text = "Nombre: ${order["name_user"]}"
+                    gravity = Gravity.CENTER
+                    setPadding(0, 0, 0, 4)
+                }
+
+                /*val weightTextView = TextView(this).apply {
+                    text = "Peso: ${order["weight_order"]}"
+                    gravity = Gravity.CENTER
+                    setPadding(0, 0, 0, 4)
+                }
+
+                val valueTextView = TextView(this).apply {
+                    text = "Precio: ${order["value_order"]}"
+                    gravity = Gravity.CENTER
+                    setPadding(0, 0, 0, 4)
+                }*/
+
+                val metodTextView = TextView(this).apply {
+                    text = "Metodo de Pago: ${order["payment_method_order"]}"
+                    gravity = Gravity.CENTER
+                    setPadding(0, 0, 0, 4)
+                }
+
+                val addressTextView = TextView(this).apply {
+                    text = "Dirección: ${order["address_order_start"]}"
+                    gravity = Gravity.CENTER
+                    setPadding(0, 0, 0, 4)
+                }
+
+                val imageView = ImageView(this).apply {
+                    setImageResource(R.drawable.basurareciclada)
+                    adjustViewBounds = true
+                    layoutParams = LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.WRAP_CONTENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT
+                    ).apply {
+                        gravity = Gravity.CENTER
+                        setMargins(0, 8, 0, 8)
+                    }
+                }
+
+                val followButton = Button(this).apply {
+                    text = "Ofrecer Precio"
+                    setOnClickListener {
+                        val idOrder = order["id_order"] as? String
+                        val userId = getSharedPreferences("user_session", MODE_PRIVATE).getInt("user_id", -1)
+                        val idTrucker = UserDao.obtenerIdTrucker(userId)
+
+                        if (idTrucker != null && idOrder != null) {
+                            UserDao.aceptarSolicitud(idTrucker, idOrder.toInt())
+                            val intent = Intent(this@VerOrdenes, mapaSeguimiento::class.java).apply {
+                                putExtra("id_order", idOrder.toInt())
+                                putExtra("is_trucker", true)
+                            }
+                            startActivity(intent)
+                        }
+                    }
+                }
+
+                // Add all views to the order layout
+                orderLayout.addView(nameTextView)
+                /*orderLayout.addView(weightTextView)
+                orderLayout.addView(valueTextView)*/
+                orderLayout.addView(metodTextView)
+                orderLayout.addView(addressTextView)
+                orderLayout.addView(imageView)
+                orderLayout.addView(followButton)
+
+                // Add the order layout to the main orders layout
+                ordersLayout.addView(orderLayout)
+            }
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        isRunning = false
+        updateThread?.interrupt()
+    }
+
 }
 
