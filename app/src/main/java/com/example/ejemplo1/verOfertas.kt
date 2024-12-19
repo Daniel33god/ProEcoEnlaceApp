@@ -110,21 +110,17 @@ class verOfertas : AppCompatActivity() {
                             gravity = Gravity.BOTTOM // Alinear el botón al fondo
                         }
                         setOnClickListener {
-                            val idOrder = order["id_order"] as? String
-                            val userId = getSharedPreferences("user_session", MODE_PRIVATE).getInt(
-                                "user_id",
-                                -1
-                            )
-                            val idTrucker = UserDao.obtenerIdTrucker(userId)
+                            val idOrder = order["id_order"]!!.toIntOrNull()
+                            val offerValue = order["offer_value"]!!.toIntOrNull()
+                            val idTrucker = order["id_trucker"]!!.toIntOrNull()
 
-                            if (idTrucker != null && idOrder != null) {
-                                UserDao.aceptarSolicitud(idTrucker, idOrder.toInt())
-                                val intent = Intent(
-                                    this@verOfertas,
-                                    mapaSeguimientoEspera::class.java
-                                ).apply {
-                                    putExtra("id_order", idOrder.toInt())
-                                    putExtra("is_trucker", true)
+                            if (idOrder != null) {
+                                if (offerValue != null && idTrucker != null) {
+                                    UserDao.aceptarOferta(idOrder,offerValue,idTrucker)
+                                }
+                                val intent = Intent(this@verOfertas,
+                                    mapaSeguimientoEspera::class.java).apply {
+                                    putExtra("id_order", idOrder)
                                 }
                                 startActivity(intent)
                             }

@@ -331,6 +331,22 @@ object UserDao {
         }
     }
 
+    fun aceptarOferta(orderId: Int, offerValue: Int, idTrucker: Int) {
+        PostgresqlConexion.getConexion().prepareStatement(
+            """
+        UPDATE "ORDER"
+        SET status_order = ?, value_order = ?, id_trucker = ?
+        WHERE id_order = ?;
+        """
+        ).use { ps ->
+            ps.setString(1, "Aceptado") // Cambia el estado a "Aceptado"
+            ps.setInt(2, offerValue)
+            ps.setInt(3, idTrucker)
+            ps.setInt(4, orderId)       // Filtra por el ID de la orden
+            ps.executeUpdate()          // Ejecuta la actualización
+        }
+    }
+
 
 
     fun insertarOrden(userId: Int, latitude: Double, longitude: Double, metodoPago: String, address: String, is_recyclable : Boolean): Int? {
@@ -391,7 +407,22 @@ object UserDao {
         }
     }
 
+    fun cancelarOrdenPorId(idOrden:Int) {
+        // Asegúrate de que idOrden no sea nulo y se pueda convertir a Int
+        //val idOrdenInt = idOrden?.toIntOrNull() ?: throw IllegalArgumentException("El ID de la orden no es válido")
 
+        PostgresqlConexion.getConexion().prepareStatement(
+            """
+        UPDATE "ORDER"
+        SET status_order = ?, value_order = NULL, id_trucker = NULL
+        WHERE id_order = ?;
+        """
+        ).use { ps ->
+            ps.setString(1, "Espera") // Cambia el estado a "Aceptado"
+            ps.setInt(2, idOrden)       // Filtra por el ID de la orden
+            ps.executeUpdate()          // Ejecuta la actualización
+        }
+    }
 
     fun obtenerOrdenes(): List<Map<String, String>> {
         val query = """
@@ -479,7 +510,7 @@ object UserDao {
 
     fun obtenerOfertasOrden(idOrden: Int): List<Map<String, String>> {
         val query = """
-        SELECT o.id_user, t.name_user, uto.offer_value, t.matricula_truck, t.description_trucker, tr.model_truck, o.id_order
+        SELECT o.id_user, t.name_user, uto.offer_value, t.matricula_truck, t.description_trucker, tr.model_truck, o.id_order, t.id_trucker
             FROM "ORDER" o
             JOIN "user_trucker_order" uto ON o.id_order = uto.id_order
             JOIN "trucker" t ON uto.id_trucker = t.id_trucker
@@ -501,7 +532,8 @@ object UserDao {
                             "matricula_truck" to rs.getString("matricula_truck"),
                             "description_trucker" to rs.getString("description_trucker"),
                             "model_truck" to rs.getString("model_truck"),
-                            "id_order" to rs.getString("id_order")
+                            "id_order" to rs.getString("id_order"),
+                            "id_trucker" to rs.getString("id_trucker"),
                         )
                     )
                 }

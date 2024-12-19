@@ -36,21 +36,21 @@ class mapaSeguimientoEspera : AppCompatActivity() {
 
             if (idOrder != -1) {
                 try {
-                    UserDao.eliminarOrdenPorId(idOrder.toString())
-                    Toast.makeText(this, "Orden eliminada correctamente", Toast.LENGTH_SHORT).show()
+                    UserDao.cancelarOrdenPorId(idOrder)
+                    Toast.makeText(this, "La Oferta a sido Cancelada correctamente", Toast.LENGTH_SHORT).show()
                 } catch (e: Exception) {
-                    Toast.makeText(this, "Error al eliminar la orden: ${e.message}", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, "Error al cancelar la orden: ${e.message}", Toast.LENGTH_LONG).show()
                 }
             } else {
                 Toast.makeText(this, "ID de orden no válido", Toast.LENGTH_SHORT).show()
             }
 
             // Navegar a la pantalla de solicitarVehiculo
-            val intent = Intent(this, solicitarVehiculo::class.java)
+            val intent = Intent(this@mapaSeguimientoEspera, verOfertas::class.java).apply {
+                putExtra("id_order", idOrder)
+            }
             startActivity(intent)
         }
-
-
         // Iniciar la verificación del estado de la orden
         iniciarVerificacionEstado(idOrder)
     }
