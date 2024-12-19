@@ -149,6 +149,7 @@ class VerOrdenes : AppCompatActivity() {
         val ingresarButton = findViewById<Button>(R.id.button12)
         ingresarButton.setOnClickListener {
             val intent = Intent(this, Conductor::class.java)
+            onDestroy()
             startActivity(intent)
         }
 
@@ -243,6 +244,7 @@ class VerOrdenes : AppCompatActivity() {
 
                         if (idTrucker != null && idOrder != null) {
                             UserDao.aceptarSolicitud(idTrucker, idOrder.toInt())
+                            onDestroy()
                             val intent = Intent(this@VerOrdenes, mapaSeguimiento::class.java).apply {
                                 putExtra("id_order", idOrder.toInt())
                                 putExtra("is_trucker", true)
