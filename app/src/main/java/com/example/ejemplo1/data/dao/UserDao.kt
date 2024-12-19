@@ -358,14 +358,39 @@ object UserDao {
         }
         return -1 // Devuelve -1 si no se generó un ID
     }
-    fun eliminarOrdenPorId(idOrden: Int) {
+
+    fun existenciaOrden(userId: Int): Boolean {
+        val query = """
+        SELECT *
+        FROM "ORDER" o
+        INNER JOIN "USER" u ON o.id_user = u.id_user
+        WHERE u.id_user = ? AND o.status_order = 'Espera';
+    """.trimIndent()
+
+        // Preparar y ejecutar la consulta
+        PostgresqlConexion.getConexion().prepareStatement(query).use { ps ->
+            ps.setInt(1, userId) // Asignar el ID del usuario al parámetro
+            ps.executeQuery().use { rs ->
+                // Si hay resultados, significa que el usuario tiene una orden activa
+                return rs.next()
+            }
+        }
+        return false // Devuelve false si no hay resultados
+    }
+
+
+    fun eliminarOrdenPorId(idOrden: String?) {
+        // Asegúrate de que idOrden no sea nulo y se pueda convertir a Int
+        val idOrdenInt = idOrden?.toIntOrNull() ?: throw IllegalArgumentException("El ID de la orden no es válido")
+
         PostgresqlConexion.getConexion().prepareStatement(
             "DELETE FROM \"ORDER\" WHERE id_order = ?;"
         ).use { ps ->
-            ps.setInt(1, idOrden)
+            ps.setInt(1, idOrdenInt) // Utiliza el valor convertido a Int
             ps.executeUpdate()
         }
     }
+
 
 
     fun obtenerOrdenes(): List<Map<String, String>> {
@@ -424,6 +449,67 @@ object UserDao {
         }
         return listaOrdenes
     }
+
+    fun obtenerOrden(userId: Int): List<Map<String, String>> {
+        val query = """
+        SELECT * FROM "ORDER" WHERE id_user = ?;
+    """.trimIndent()
+
+        val listaOrdenes = mutableListOf<Map<String, String>>()
+
+        PostgresqlConexion.getConexion().prepareStatement(query).use { ps ->
+            ps.setInt(1, userId) // Asignar el userId al parámetro de la consulta
+            ps.executeQuery().use { rs ->
+                while (rs.next()) {
+                    listaOrdenes.add(
+                        mapOf(
+                            "id_user" to rs.getString("id_user"),
+                            "payment_method_order" to rs.getString("payment_method_order"),
+                            "is_recyclable" to rs.getString("is_recyclable"),
+                            "address_order_start" to rs.getString("address_order_start"),
+                            "id_order" to rs.getString("id_order"),
+                            "status_order" to rs.getString("status_order")
+                        )
+                    )
+                }
+            }
+        }
+        return listaOrdenes
+    }
+
+    fun obtenerOfertasOrden(idOrden: Int): List<Map<String, String>> {
+        val query = """
+        SELECT o.id_user, t.name_user, uto.offer_value, t.matricula_truck, t.description_trucker, tr.model_truck, o.id_order
+            FROM "ORDER" o
+            JOIN "user_trucker_order" uto ON o.id_order = uto.id_order
+            JOIN "trucker" t ON uto.id_trucker = t.id_trucker
+            JOIN "truck" tr ON t.id_trucker = tr.id_trucker
+            WHERE o.id_order = 2;
+    """.trimIndent()
+
+        val listaOrdenes = mutableListOf<Map<String, String>>()
+
+        PostgresqlConexion.getConexion().prepareStatement(query).use { ps ->
+            ps.setInt(1, idOrden) // Asignar el userId al parámetro de la consulta
+            ps.executeQuery().use { rs ->
+                while (rs.next()) {
+                    listaOrdenes.add(
+                        mapOf(
+                            "id_user" to rs.getString("id_user"),
+                            "name_user" to rs.getString("name_user"),
+                            "offer_value" to rs.getString("offer_value"),
+                            "matricula_truck" to rs.getString("matricula_truck"),
+                            "description_trucker" to rs.getString("description_trucker"),
+                            "model_truck" to rs.getString("model_truck"),
+                            "id_order" to rs.getString("id_order")
+                        )
+                    )
+                }
+            }
+        }
+        return listaOrdenes
+    }
+
 
     fun calificarConductor(idOrder: Int, rating: Float, comentario: String) {
         val query = """

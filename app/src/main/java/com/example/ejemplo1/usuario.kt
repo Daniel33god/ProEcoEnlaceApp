@@ -27,14 +27,6 @@ class usuario : AppCompatActivity() {
             startActivity(intent) // Navegar a la nueva pantalla
         }
 
-        // Configurar el botón "Ingresar" para cambiar de pantalla
-        val ingresarButton3 = findViewById<Button>(R.id.verOrden)
-        ingresarButton3.setOnClickListener {
-            val intent = Intent(this, verOrden::class.java)
-            startActivity(intent) // Navegar a la nueva pantalla
-        }
-
-
         // Recuperar el ID del usuario desde SharedPreferences
         val sharedPreferences = getSharedPreferences("user_session", MODE_PRIVATE)
         val userId = sharedPreferences.getInt("user_id", -1)
@@ -54,10 +46,23 @@ class usuario : AppCompatActivity() {
         // Configurar el botón "Ingresar" para cambiar de pantalla
         val ingresarButton2 = findViewById<Button>(R.id.button7)
         ingresarButton2.setOnClickListener {
-            val intent = Intent(this, solicitarVehiculo::class.java)
-            startActivity(intent) // Navegar a la nueva pantalla
+            // Verificar la existencia de una orden para el usuario actual
+            val existe = UserDao.existenciaOrden(userId)
+
+            if (existe) {
+                Toast.makeText(this, "Ya tienes una orden activa.", Toast.LENGTH_SHORT).show()
+            } else {
+                val intent = Intent(this, solicitarVehiculo::class.java)
+                startActivity(intent) // Navegar a la nueva pantalla
+            }
         }
 
+        // Configurar el botón "Ingresar" para cambiar de pantalla
+        val ingresarButton3 = findViewById<Button>(R.id.verOrden)
+        ingresarButton3.setOnClickListener {
+            val intent = Intent(this, verOrden::class.java)
+            startActivity(intent) // Navegar a la nueva pantalla
+        }
 
     }
 

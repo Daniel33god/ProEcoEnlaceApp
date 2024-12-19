@@ -36,7 +36,7 @@ class mapaSeguimientoEspera : AppCompatActivity() {
 
             if (idOrder != -1) {
                 try {
-                    UserDao.eliminarOrdenPorId(idOrder)
+                    UserDao.eliminarOrdenPorId(idOrder.toString())
                     Toast.makeText(this, "Orden eliminada correctamente", Toast.LENGTH_SHORT).show()
                 } catch (e: Exception) {
                     Toast.makeText(this, "Error al eliminar la orden: ${e.message}", Toast.LENGTH_LONG).show()

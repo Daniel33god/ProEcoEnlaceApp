@@ -63,6 +63,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="8dp"
+            android:layout_marginTop="90dp"
             android:gravity="center">
 
             <!-- Botón para volver -->
@@ -76,20 +77,10 @@
                 <!-- Aquí puedes agregar elementos dinámicamente -->
             </LinearLayout>
 
-            <Button
-                android:id="@+id/button12"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="Volver"
-                android:layout_gravity="center" />
 
             <!-- Lista de órdenes -->
         </LinearLayout>
     </ScrollView>
-
-
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
