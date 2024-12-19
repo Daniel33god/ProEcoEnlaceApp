@@ -484,7 +484,7 @@ object UserDao {
             JOIN "user_trucker_order" uto ON o.id_order = uto.id_order
             JOIN "trucker" t ON uto.id_trucker = t.id_trucker
             JOIN "truck" tr ON t.id_trucker = tr.id_trucker
-            WHERE o.id_order = 2;
+            WHERE o.id_order = ?;
     """.trimIndent()
 
         val listaOrdenes = mutableListOf<Map<String, String>>()

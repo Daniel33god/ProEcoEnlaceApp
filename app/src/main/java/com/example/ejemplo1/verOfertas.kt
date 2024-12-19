@@ -2,6 +2,7 @@ package com.example.ejemplo1
 
 import android.content.Intent
 import android.graphics.Color
+import android.graphics.Typeface
 import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
@@ -63,31 +64,38 @@ class verOfertas : AppCompatActivity() {
                         text = "Nombre Conductor: ${order["name_user"]}"
                         gravity = Gravity.CENTER
                         setPadding(0, 0, 0, 4) // Espacio entre los elementos
+                        textSize = 18f
                     }
 
                     val matriculaTextView = TextView(this).apply {
                         text = "Matricula del Vehiculo: ${order["matricula_truck"]}"
                         gravity = Gravity.CENTER
                         setPadding(0, 0, 0, 4) // Espacio entre los elementos
+                        textSize = 18f
                     }
 
                     val modelTextView = TextView(this).apply {
                         text = "Modelo del Vehiculo: ${order["model_truck"]}"
                         gravity = Gravity.CENTER
                         setPadding(0, 0, 0, 4) // Espacio entre los elementos
+                        textSize = 18f
                     }
 
                     val descriptionTextView = TextView(this).apply {
                         text = "Descripción del Vehiculo: ${order["description_trucker"]}"
                         gravity = Gravity.CENTER
                         setPadding(0, 0, 0, 4) // Espacio entre los elementos
+                        textSize = 18f
                     }
 
                     val offerTextView = TextView(this).apply {
                         text = "Oferta Propuesta: ${order["offer_value"]}"
                         gravity = Gravity.CENTER
                         setPadding(0, 0, 0, 4) // Espacio entre los elementos
+                        setTypeface(Typeface.DEFAULT_BOLD)
+                        textSize = 18f
                     }
+
 
                     val followButton = Button(this).apply {
                         text = "Aceptar Oferta"

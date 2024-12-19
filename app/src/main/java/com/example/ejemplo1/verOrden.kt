@@ -112,7 +112,7 @@ class verOrden : AppCompatActivity() {
                         //ERROR DE ENVIO DE ID_ORDER
 
                         // Recuperar id_order de order
-                        val idOrder = order["id_order"]?.toIntOrNull() //tiene k irse al verOfertas
+                        val idOrder = order["id_order"]!!.toIntOrNull() //tiene k irse al verOfertas
 
                         // Verificar si idOrder es válido
                         if (idOrder != null) {
