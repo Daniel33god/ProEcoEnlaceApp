@@ -59,7 +59,7 @@ class mapaSeguimientoEspera : AppCompatActivity() {
         statusCheckRunnable = object : Runnable {
             override fun run() {
                 val status = UserDao.buscarStatusOrden(idOrder)
-                if (status == "Progreso") {
+                if (status == "Aceptado") {
                     // Cambiar a la pantalla de mapaSeguimiento
                     val intent = Intent(this@mapaSeguimientoEspera, mapaSeguimiento::class.java).apply {
                         putExtra("id_order", idOrder)

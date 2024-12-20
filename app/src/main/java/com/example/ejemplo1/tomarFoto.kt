@@ -71,6 +71,7 @@ class tomarFoto : AppCompatActivity() {
         val ingresarButton = findViewById<Button>(R.id.button6)
         val spinnerMetodo = findViewById<Spinner>(R.id.spinnerMetodo)
         val reciclable = findViewById<CheckBox>(R.id.reciclable)
+        val descripcion = findViewById<EditText>(R.id.description_orden)
 
         // Recuperar datos pasados desde la actividad anterior
         val latitude = intent.getDoubleExtra("LATITUDE", 0.0)
@@ -82,7 +83,7 @@ class tomarFoto : AppCompatActivity() {
             val metodopago = spinnerMetodo.selectedItem.toString() // Obtener el valor seleccionado en el Spinner
             if (!metodopago.equals("Seleccione su Metodo de Pago")) {
                 // Llamamos al DAO para insertar la orden y obtener el id_order
-                val idOrder = UserDao.insertarOrden(userId, latitude, longitude, metodopago, address, reciclable.isChecked)
+                val idOrder = UserDao.insertarOrden(userId, latitude, longitude, metodopago, address, reciclable.isChecked, descripcion.text.toString())
 
                 if (idOrder != null) {
                     if (idOrder > -1) {

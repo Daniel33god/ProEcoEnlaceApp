@@ -81,7 +81,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:backgroundTint="#4CAF50"
-                android:text="ofrecer Precio" />
+                android:text="Ofrecer Precio" />
 
         </LinearLayout>
     </ScrollView>

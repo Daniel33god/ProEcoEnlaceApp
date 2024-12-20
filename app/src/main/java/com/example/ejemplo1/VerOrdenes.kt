@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.Gravity
 import android.widget.Button
 import android.widget.ImageView
@@ -11,7 +12,9 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.setPadding
 import com.example.ejemplo1.data.dao.UserDao
+import kotlin.math.log
 
 class VerOrdenes : AppCompatActivity() {
 
@@ -146,14 +149,16 @@ class VerOrdenes : AppCompatActivity() {
 
         ordersLayout = findViewById(R.id.ordersLayout)
 
+
         val ingresarButton = findViewById<Button>(R.id.button12)
         ingresarButton.setOnClickListener {
             val intent = Intent(this, Conductor::class.java)
-            onDestroy()
             startActivity(intent)
+            finish()
         }
 
         startOrderUpdateThread()
+
     }
 
     private fun startOrderUpdateThread() {
@@ -173,6 +178,7 @@ class VerOrdenes : AppCompatActivity() {
                 } catch (e: Exception) {
                     handler.post {
                         Toast.makeText(this, "Error al cargar las órdenes: ${e.message}", Toast.LENGTH_SHORT).show()
+                        Log.d("error", "${e.message}")
                     }
                 }
             }
@@ -187,6 +193,7 @@ class VerOrdenes : AppCompatActivity() {
             Toast.makeText(this, "No hay órdenes disponibles.", Toast.LENGTH_SHORT).show()
         } else {
             for (order in ordenes) {
+                Log.d("is_recyclable", "bool: ${order["is_recyclable"]}")
                 val orderLayout = LinearLayout(this).apply {
                     orientation = LinearLayout.VERTICAL
                     gravity = Gravity.CENTER
@@ -196,6 +203,7 @@ class VerOrdenes : AppCompatActivity() {
                 val nameTextView = TextView(this).apply {
                     text = "Nombre: ${order["name_user"]}"
                     gravity = Gravity.CENTER
+                    textSize = 18f
                     setPadding(0, 0, 0, 4)
                 }
 
@@ -210,16 +218,35 @@ class VerOrdenes : AppCompatActivity() {
                     gravity = Gravity.CENTER
                     setPadding(0, 0, 0, 4)
                 }*/
+                val reciclajeTextView = TextView(this).apply {
 
+                    if(order["is_recyclable"]!!.equals("t"))
+                        text = "Reciclable: Si"
+
+                    else
+                        text = "Reciclable: No"
+                    gravity = Gravity.CENTER
+                    textSize = 18f
+                    setPadding(0, 0, 0, 4)
+                }
                 val metodTextView = TextView(this).apply {
                     text = "Metodo de Pago: ${order["payment_method_order"]}"
                     gravity = Gravity.CENTER
+                    textSize = 18f
                     setPadding(0, 0, 0, 4)
                 }
 
                 val addressTextView = TextView(this).apply {
                     text = "Dirección: ${order["address_order_start"]}"
                     gravity = Gravity.CENTER
+                    textSize = 18f
+                    setPadding(0, 0, 0, 4)
+                }
+
+                val descriptionTextView = TextView(this).apply {
+                    text = "Descripción: ${order["description_order"]}"
+                    gravity = Gravity.CENTER
+                    textSize = 18f
                     setPadding(0, 0, 0, 4)
                 }
 
@@ -239,17 +266,30 @@ class VerOrdenes : AppCompatActivity() {
                     text = "Ofrecer Precio"
                     setOnClickListener {
                         val idOrder = order["id_order"] as? String
+                        //val reciclable = order["is_recyclable"] as? Boolean
+                        var reciclable = false
+                        if(order["is_recyclable"]!!.equals("t"))
+                            reciclable = true
+
+
                         val userId = getSharedPreferences("user_session", MODE_PRIVATE).getInt("user_id", -1)
                         val idTrucker = UserDao.obtenerIdTrucker(userId)
 
                         if (idTrucker != null && idOrder != null) {
-                            UserDao.aceptarSolicitud(idTrucker, idOrder.toInt())
-                            onDestroy()
-                            val intent = Intent(this@VerOrdenes, mapaSeguimiento::class.java).apply {
+                            val intent = Intent(this@VerOrdenes, ofrecerPrecio::class.java).apply {
                                 putExtra("id_order", idOrder.toInt())
-                                putExtra("is_trucker", true)
+                                putExtra("is_trucker", idTrucker.toInt())
+                                putExtra("is_recyclable", reciclable)
                             }
                             startActivity(intent)
+                            //UserDao.aceptarSolicitud(idTrucker, idOrder.toInt())
+
+                            /*val intent = Intent(this@VerOrdenes, mapaSeguimiento::class.java).apply {
+                                putExtra("id_order", idOrder.toInt())
+                                putExtra("is_trucker", true)
+                            }*/
+                            /*startActivity(intent)*/
+                            finish()
                         }
                     }
                 }
@@ -258,8 +298,10 @@ class VerOrdenes : AppCompatActivity() {
                 orderLayout.addView(nameTextView)
                 /*orderLayout.addView(weightTextView)
                 orderLayout.addView(valueTextView)*/
+                orderLayout.addView(reciclajeTextView)
                 orderLayout.addView(metodTextView)
                 orderLayout.addView(addressTextView)
+                orderLayout.addView(descriptionTextView)
                 orderLayout.addView(imageView)
                 orderLayout.addView(followButton)
 
@@ -272,8 +314,12 @@ class VerOrdenes : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         isRunning = false
-        updateThread?.interrupt()
+        if (updateThread?.isAlive == true) {
+            updateThread?.interrupt()
+        }
+        updateThread = null
     }
+
 
 }
 

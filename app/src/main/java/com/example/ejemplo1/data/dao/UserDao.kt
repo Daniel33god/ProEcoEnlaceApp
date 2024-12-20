@@ -335,7 +335,7 @@ object UserDao {
         PostgresqlConexion.getConexion().prepareStatement(
             """
         UPDATE "ORDER"
-        SET status_order = ?, value_order = ?, id_trucker = ?
+        SET status_order = ?, value_order = ?, id_trucker = ?, coordenates_x_order_end = -70.14129193434847, coordenates_y_order_end = -20.219767752933535
         WHERE id_order = ?;
         """
         ).use { ps ->
@@ -349,10 +349,10 @@ object UserDao {
 
 
 
-    fun insertarOrden(userId: Int, latitude: Double, longitude: Double, metodoPago: String, address: String, is_recyclable : Boolean): Int? {
+    fun insertarOrden(userId: Int, latitude: Double, longitude: Double, metodoPago: String, address: String, is_recyclable : Boolean, description : String): Int? {
         val query = """
-        INSERT INTO "ORDER" (coordenates_y_orderstart, coordenates_x_order_start, payment_method_order, id_user, status_order, address_order_start, is_recyclable) 
-        VALUES (?, ?, ?, ?, 'Espera', ?, ?) RETURNING id_order;
+        INSERT INTO "ORDER" (coordenates_y_order_start, coordenates_x_order_start, payment_method_order, id_user, status_order, address_order_start, is_recyclable,description_order) 
+        VALUES (?, ?, ?, ?, 'Espera', ?, ?, ?) RETURNING id_order;
     """.trimIndent()
 
         PostgresqlConexion.getConexion().prepareStatement(query).use { ps ->
@@ -365,6 +365,7 @@ object UserDao {
             ps.setString(5, address)
             //ps.setDouble(8, tajo_monto)
             ps.setBoolean(6, is_recyclable)
+            ps.setString(7, description)
 
             ps.executeQuery().use { rs ->
                 if (rs.next()) {
@@ -426,7 +427,7 @@ object UserDao {
 
     fun obtenerOrdenes(): List<Map<String, String>> {
         val query = """
-     SELECT u.id_user, u.name_user, o.weight_order, o.value_order, o.address_order_start, o.value_order, o.id_order, o.payment_method_order
+     SELECT u.id_user, u.name_user, o.weight_order, o.value_order, o.address_order_start, o.value_order, o.id_order, o.payment_method_order, o.is_recyclable, o.description_order
          FROM "USER" u
          JOIN "ORDER" o ON u.id_user = o.id_user WHERE o.status_order = 'Espera';
  """.trimIndent()
@@ -443,7 +444,9 @@ object UserDao {
                             "value_order" to rs.getString("value_order"),
                             "address_order_start" to rs.getString("address_order_start"),
                             "payment_method_order" to rs.getString("payment_method_order"),
-                            "id_order" to rs.getString("id_order")
+                            "id_order" to rs.getString("id_order"),
+                            "is_recyclable" to rs.getString("is_recyclable"),
+                            "description_order" to rs.getString("description_order"),
                         )
                     )
                 }
@@ -508,6 +511,19 @@ object UserDao {
         return listaOrdenes
     }
 
+    fun enviarOferta(idOrden: Int, idTrucker: Int, offerValue: Int){
+        val query = """
+            INSERT INTO user_trucker_order (id_order, id_trucker, offer_value) 
+            values (?, ?, ?)
+        """.trimIndent()
+        PostgresqlConexion.getConexion().prepareStatement(query).use { ps ->
+            ps.setInt(1, idOrden)
+            ps.setInt(2, idTrucker)
+            ps.setInt(3, offerValue)
+            ps.executeUpdate()          // Ejecuta la actualización
+        }
+
+    }
     fun obtenerOfertasOrden(idOrden: Int): List<Map<String, String>> {
         val query = """
         SELECT o.id_user, t.name_user, uto.offer_value, t.matricula_truck, t.description_trucker, tr.model_truck, o.id_order, t.id_trucker

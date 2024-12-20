@@ -27,107 +27,113 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:layout_marginTop="100dp"
-        android:padding="16dp"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="0dp">
-
-        <!-- Título -->
-        <TextView
-            android:id="@+id/textViewTitulo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="30dp"
-            android:text="Imagen y Metodo de Pago"
-            android:textSize="24sp"
-            android:textStyle="bold" />
-
-        <!-- Botón para cargar la imagen -->
-        <Button
-            android:id="@+id/btnLoadImage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Cargar Imagen" />
-
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="400dp"
-            android:layout_height="400dp"
-            android:layout_marginTop="1dp"
-            android:visibility="gone" />
-
-
-
-        <!-- Selector para método de pago -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="Método de Pago:"
-            android:textSize="16sp"
-            android:textStyle="bold" />
-
-        <Spinner
-            android:id="@+id/spinnerMetodo"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginTop="20dp"
-            android:entries="@array/metodos"
-            android:spinnerMode="dropdown" />
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="16dp"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="0dp">
+
+            <!-- Título -->
+            <TextView
+                android:id="@+id/textViewTitulo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="30dp"
+                android:text="Imagen y Metodo de Pago"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <!-- Botón para cargar la imagen -->
+            <Button
+                android:id="@+id/btnLoadImage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cargar Imagen" />
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="400dp"
+                android:layout_height="400dp"
+                android:layout_marginTop="1dp"
+                android:visibility="gone" />
 
 
+            <!-- Selector para método de pago -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Método de Pago:"
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
-        <!-- Botón para enviar -->
-        <FrameLayout
-            android:layout_width="wrap_content"
-            android:layout_height="50dp">
-
-            <LinearLayout
+            <Spinner
+                android:id="@+id/spinnerMetodo"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:layout_height="40dp"
+                android:layout_marginTop="20dp"
+                android:entries="@array/metodos"
+                android:spinnerMode="dropdown" />
 
-                <CheckBox
-                    android:id="@+id/reciclable"
-                    android:layout_width="162dp"
-                    android:layout_height="match_parent"
-                    android:text="¿Desea Reciclar?" />
 
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:id="@+id/fab_2"
+            <!-- Botón para enviar -->
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="50dp">
+
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:clickable="true"
-                    app:srcCompat="@android:drawable/ic_menu_info_details" />
-            </LinearLayout>
-        </FrameLayout>
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/textView3"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:visibility="gone"
-            />
+                    <CheckBox
+                        android:id="@+id/reciclable"
+                        android:layout_width="162dp"
+                        android:layout_height="match_parent"
+                        android:text="¿Desea Reciclar?" />
 
-        <Button
-            android:id="@+id/button6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:backgroundTint="#4CAF50"
-            android:text="Solicitar Vehiculo" />
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
+                        android:id="@+id/fab_2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:clickable="true"
+                        app:srcCompat="@android:drawable/ic_menu_info_details" />
+                </LinearLayout>
+            </FrameLayout>
 
-    </LinearLayout>
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:visibility="gone" />
+
+            <EditText
+                android:id="@+id/description_orden"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:gravity="start|top"
+                android:hint="Ingrese los detalles de su orden."
+                android:inputType="textMultiLine" />
+
+            <Button
+                android:id="@+id/button6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:backgroundTint="#4CAF50"
+                android:text="Solicitar Vehiculo" />
+
+        </LinearLayout>
     </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
