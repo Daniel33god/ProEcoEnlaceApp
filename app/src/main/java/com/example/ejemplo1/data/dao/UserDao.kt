@@ -455,16 +455,17 @@ object UserDao {
         return listaOrdenes
     }
 
-    fun obtenerOrdenesRealizadas(): List<Map<String, String>> {
+    fun obtenerOrdenesRealizadas(id_trucker : Int): List<Map<String, String>> {
         val query = """
      SELECT u.id_user, u.name_user, o.weight_order, o.value_order, o.address_order_start, o.value_order, o.ranking_trucker_order, o.comment_trucker_order, o.id_order
          FROM "USER" u
-         JOIN "ORDER" o ON u.id_user = o.id_user WHERE o.status_order = 'Completado';
+         JOIN "ORDER" o ON u.id_user = o.id_user WHERE o.status_order = 'Completado' and o.id_trucker = ?;
  """.trimIndent()
 
         val listaOrdenes = mutableListOf<Map<String, String>>()
 
         PostgresqlConexion.getConexion().prepareStatement(query).use { ps ->
+            ps.setInt(1, id_trucker)
             ps.executeQuery().use { rs ->
                 while (rs.next()) {
                     listaOrdenes.add(

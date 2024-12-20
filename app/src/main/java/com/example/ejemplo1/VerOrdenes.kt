@@ -177,8 +177,8 @@ class VerOrdenes : AppCompatActivity() {
                     Thread.sleep(10000)
                 } catch (e: Exception) {
                     handler.post {
-                        Toast.makeText(this, "Error al cargar las órdenes: ${e.message}", Toast.LENGTH_SHORT).show()
-                        Log.d("error", "${e.message}")
+                        /*Toast.makeText(this, "Error al cargar las órdenes: ${e.message}", Toast.LENGTH_SHORT).show()
+                        Log.d("error", "${e.message}")*/
                     }
                 }
             }

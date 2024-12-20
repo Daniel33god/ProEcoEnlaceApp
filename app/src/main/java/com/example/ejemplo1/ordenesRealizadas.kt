@@ -29,10 +29,11 @@ class ordenesRealizadas : AppCompatActivity() {
         // Recuperar el ID del usuario desde SharedPreferences
         val sharedPreferences = getSharedPreferences("user_session", MODE_PRIVATE)
         val userId = sharedPreferences.getInt("user_id", -1)
+        val id_trucker = UserDao.obtenerIdTrucker(userId)
 
         // Llamar a obtenerOrdenes desde UserDao
         try {
-            val ordenes = UserDao.obtenerOrdenesRealizadas()
+            val ordenes = UserDao.obtenerOrdenesRealizadas(id_trucker!!)
             if (ordenes.isEmpty()) {
                 Toast.makeText(this, "No hay órdenes disponibles.", Toast.LENGTH_SHORT).show()
             } else {
@@ -87,7 +88,7 @@ class ordenesRealizadas : AppCompatActivity() {
 
                     // Añadir los TextViews al LinearLayout de la orden
                     orderLayout.addView(nameTextView)
-                    orderLayout.addView(weightTextView)
+                    //orderLayout.addView(weightTextView)
                     orderLayout.addView(valueTextView)
                     orderLayout.addView(addressTextView)
                     orderLayout.addView(rankingTextView)

@@ -7,6 +7,7 @@ import android.os.Looper
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -36,6 +37,8 @@ class ofrecerPrecio : AppCompatActivity() {
         val monto = findViewById<EditText>(R.id.editTextMonto)
         val ingresarButton = findViewById<Button>(R.id.button6)
 
+        val texto = findViewById<TextView>(R.id.textViewTitulo)
+        texto.text = "Solicitud de ${UserDao.obtenerNombrePorId(UserDao.buscarStringOrden(idOrder, "id_user").toString().toInt())}"
         ingresarButton.setOnClickListener {
             val montofinal = monto.text.toString().toInt()
             var total = montofinal
@@ -52,6 +55,13 @@ class ofrecerPrecio : AppCompatActivity() {
                     if (isRunning) {
                         val confirmacion = UserDao.buscarStatusOrden(idOrder)
                         if (confirmacion == "Aceptado") {
+                            if(UserDao.buscarStringOrden(idOrder, "id_trucker")!!.toInt() != idTrucker)
+                            {
+                                isRunning = false
+                                finish()
+                                return
+                            }
+
                             val intent = Intent(this@ofrecerPrecio, mapaSeguimiento::class.java).apply {
                                 putExtra("id_order", idOrder)
                                 putExtra("is_trucker", true)

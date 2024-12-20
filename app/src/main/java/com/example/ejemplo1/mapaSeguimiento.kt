@@ -11,6 +11,8 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.animation.LinearInterpolator
 import android.widget.Button
+import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import com.example.ejemplo1.api.ApiService
 import com.example.ejemplo1.api.RouteResponse
@@ -47,6 +49,8 @@ class mapaSeguimiento : AppCompatActivity(), OnMapReadyCallback {
         val toolbar: androidx.appcompat.widget.Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
 
+        val texto = findViewById<TextView>(R.id.textViewTitulo)
+
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         val mapFragment = supportFragmentManager
@@ -55,7 +59,11 @@ class mapaSeguimiento : AppCompatActivity(), OnMapReadyCallback {
 
         val idOrder = intent.getIntExtra("id_order", -1)
         val isTrucker = intent.getBooleanExtra("is_trucker", false)
-        println(isTrucker)
+        if (isTrucker == true)
+        {
+            texto.text = "En dirección hacia ${UserDao.obtenerNombrePorId(UserDao.buscarStringOrden(idOrder, "id_user").toString().toInt())}"
+        }
+        //println(isTrucker)
         val ingresarButton2 = findViewById<Button>(R.id.button5)
         var intent: Intent? = null
         ingresarButton2.setOnClickListener {
